@@ -1,75 +1,75 @@
 # BOA Futsal Arena ⚽
 
-BOA Futsal is a modern, responsive web application for managing futsal arena bookings. Built with **Laravel 12** and **Tailwind CSS**, it features a beautiful glassmorphism-inspired dark mode UI, smooth scrolling animations, and an intuitive Admin Panel for managing users, bookings, and messages.
+BOA Futsal adalah aplikasi web modern dan responsif yang dirancang untuk mengelola pemesanan (booking) lapangan futsal. Dibangun menggunakan **Laravel 12** dan **Tailwind CSS**, aplikasi ini menghadirkan antarmuka (UI) bernuansa *dark mode* bergaya *glassmorphism* yang elegan, efek *smooth scrolling*, serta Panel Admin yang intuitif untuk mengelola pengguna, pesanan lapangan, dan pesan masuk.
 
-## ✨ Features
+## ✨ Fitur Utama
 
-- **Modern UI/UX**: Dark mode theme with glassmorphism effects, powered by Tailwind CSS.
-- **Smooth Animations**: Animate On Scroll (AOS) for buttery-smooth page loading and interactions.
-- **Responsive Design**: Fully optimized for desktop, tablet, and mobile viewing.
-- **Landing Page**: Information about facilities, fields, location (integrated with Google Maps), and contact.
-- **Admin Dashboard**: Manage users, monitor bookings, and read incoming messages/collaboration requests from users.
-- **Dynamic Content**: Data is driven by a MySQL database using Laravel's robust ORM (Eloquent).
+- **UI/UX Modern**: Tema *dark mode* elegan dengan efek *glassmorphism* yang menggunakan Tailwind CSS.
+- **Animasi Super Mulus**: Menggunakan Animate On Scroll (AOS) sehingga setiap elemen akan muncul perlahan secara interaktif dan elegan saat di-*scroll*.
+- **Desain Responsif**: Tampilan sangat dioptimalkan dan tetap rapi ketika dibuka melalui desktop, tablet, maupun ponsel.
+- **Landing Page Interaktif**: Menampilkan informasi seputar fasilitas, daftar lapangan, lokasi aktual (terintegrasi dengan Google Maps), dan kontak kami.
+- **Admin Dashboard**: Panel khusus administrator untuk mengatur pengguna, melihat daftar pemesanan, dan memantau pesan/penawaran kerja sama yang masuk.
+- **Data Dinamis**: Menggunakan database MySQL dengan Laravel Eloquent ORM untuk pengolahan data yang tangguh dan aman.
 
-## 🚀 Tech Stack
+## 🚀 Teknologi yang Digunakan
 
 - **Backend**: Laravel 12 (PHP 8.2+)
 - **Frontend**: Blade Templating, Tailwind CSS, Vanilla JS
-- **Animations**: AOS (Animate On Scroll)
-- **Database**: MySQL / SQLite (configurable)
-- **Local Dev Environment**: Laragon (recommended)
+- **Animasi**: AOS (Animate On Scroll)
+- **Database**: MySQL / SQLite
+- **Environment**: Laragon (Sangat direkomendasikan untuk pengembangan lokal)
 
-## 🛠️ Installation & Setup
+## 🛠️ Panduan Instalasi & Persiapan
 
-1. **Clone the repository**
+1. **Clone repositori ini**
    ```bash
    git clone https://github.com/Jonnint/Boa-Futsal.git
    cd Boa-Futsal/boafutsalv1
    ```
 
-2. **Install PHP dependencies**
+2. **Install dependensi PHP (Composer)**
    ```bash
    composer install
    ```
 
-3. **Install NPM dependencies**
+3. **Install dependensi NPM**
    ```bash
    npm install
    ```
 
-4. **Environment Configuration**
-   Copy the `.env.example` to `.env` and generate the app key:
+4. **Konfigurasi Environment**
+   Gandakan file `.env.example` menjadi `.env` lalu hasilkan *app key*:
    ```bash
    cp .env.example .env
    php artisan key:generate
    ```
-   *Configure your database credentials in the `.env` file.*
+   *Jangan lupa sesuaikan pengaturan database (DB_DATABASE, DB_USERNAME, dll.) di dalam file `.env`.*
 
-5. **Run Migrations & Seeders**
+5. **Jalankan Migrasi & Seeder Database**
    ```bash
    php artisan migrate --seed
    ```
 
-6. **Start the Development Servers**
-   Run the following commands in separate terminal windows:
+6. **Jalankan Server Lokal**
+   Gunakan perintah berikut di dua terminal (*command prompt*) yang berbeda:
    ```bash
    php artisan serve
    npm run dev
    ```
-   The application will be accessible at `http://localhost:8000`.
+   Aplikasi BOA Futsal siap diakses melalui `http://localhost:8000`.
 
-## 📱 User Roles
+## 📱 Pembagian Hak Akses (Role)
 
-- **Guest**: Can view the landing page, facilities, fields, and send contact/collaboration messages.
-- **Authenticated Users**: Can book futsal fields.
-- **Admin**: Has access to `/admin/dashboard` to manage the platform's data.
+- **Guest (Pengunjung Biasa)**: Bisa melihat *landing page*, menjelajahi fasilitas, informasi lapangan, lokasi, serta mengirim pesan saran atau tawaran kerja sama.
+- **Pengguna Terdaftar**: Memiliki akses untuk memesan (*booking*) jadwal lapangan futsal.
+- **Admin**: Memiliki akses ke halaman `/admin/dashboard` untuk mengelola seluruh data platform.
 
-## 🎨 UI/UX Highlights
+## 🎨 Highlight UI/UX
 
-- **Premium Footer**: Glowing aesthetics with comprehensive navigation and CTA.
-- **Floating WhatsApp Button**: Positioned neatly on the bottom right for direct admin contact, optimized for mobile screens.
-- **Smooth Scrolling**: Implemented on all anchor links and page scroll (AOS).
+- **Footer Premium**: Didesain khusus menggunakan elemen memukau dan navigasi ringkas serta *Call to Action* (CTA).
+- **Tombol WhatsApp Melayang**: Diletakkan secara proporsional dan otomatis menyesuaikan (*responsive resize*) di perangkat ponsel (*mobile*) agar pengunjung bisa langsung mengirim pesan tanpa halangan.
+- **Smooth Scrolling (AOS)**: Transisi elemen-elemen dan navigasi tautan yang berjalan dengan mulus bagai mentega.
 
-## 📜 License
+## 📜 Lisensi
 
-This project is proprietary for BOA Futsal Arena.
+Proyek ini adalah sistem *proprietary* yang dibuat khusus untuk BOA Futsal Arena.
