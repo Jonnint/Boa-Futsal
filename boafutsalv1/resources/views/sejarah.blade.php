@@ -6,6 +6,8 @@
     <title>Sejarah - BOA Futsal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .glass { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(12px); }
@@ -91,6 +93,22 @@
     <footer class="py-10 border-t border-white/5 text-center text-gray-600 text-sm">
         &copy; 2026 BOA Futsal Arena.
     </footer>
+    </footer>
 
+    <!-- AOS Animation Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply fade-up animation to sections automatically
+            document.querySelectorAll('section, article').forEach((el) => {
+                if (!el.hasAttribute('data-aos')) el.setAttribute('data-aos', 'fade-up');
+            });
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50,
+            });
+        });
+    </script>
 </body>
 </html>

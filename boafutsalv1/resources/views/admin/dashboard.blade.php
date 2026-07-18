@@ -1,101 +1,8 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - BOA Futsal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
-</head>
-<body class="bg-[#050505] text-white">
+@extends('layouts.admin')
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-4 md:py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="flex items-center justify-between">
-                <a href="/admin/dashboard" class="text-xl md:text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span> <span class="text-xs md:text-sm text-gray-500">Admin</span>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden lg:flex items-center gap-3 xl:gap-4 text-xs xl:text-sm">
-                    <a href="/" class="font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Homepage
-                    </a>
-                    <a href="/admin/bookings" class="font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Kelola Booking
-                    </a>
-                    <a href="/admin/users" class="font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Kelola User
-                    </a>
-                    <a href="/admin/messages" class="font-medium text-gray-400 hover:text-green-400 transition-colors flex items-center gap-1">
-                        Pesan Masuk
-                        @php $unread = \App\Models\ContactMessage::where('status','unread')->count(); @endphp
-                        @if($unread > 0)
-                            <span class="px-1.5 py-0.5 bg-green-500 text-black text-xs font-extrabold rounded-full">{{ $unread }}</span>
-                        @endif
-                    </a>
-                    <span class="text-gray-600">|</span>
-                    <span class="text-gray-400 hidden xl:inline">{{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="px-4 xl:px-5 py-2 xl:py-2.5 bg-white/5 border border-white/10 text-white rounded-xl font-bold hover:bg-white/10 transition-all">
-                            Logout
-                        </button>
-                    </form>
-                </div>
+@section('title', 'Dashboard')
 
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="lg:hidden p-2 text-gray-400 hover:text-green-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden lg:hidden mt-4 pt-4 border-t border-white/10">
-                <div class="flex flex-col gap-3 text-sm">
-                    <a href="/" class="font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Homepage
-                    </a>
-                    <a href="/admin/bookings" class="font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Kelola Booking
-                    </a>
-                    <a href="/admin/users" class="font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Kelola User
-                    </a>
-                    <a href="/admin/messages" class="font-medium text-gray-400 hover:text-green-400 transition-colors flex items-center gap-2">
-                        Pesan Masuk
-                        @php $unreadMobile = \App\Models\ContactMessage::where('status','unread')->count(); @endphp
-                        @if($unreadMobile > 0)
-                            <span class="px-1.5 py-0.5 bg-green-500 text-black text-xs font-extrabold rounded-full">{{ $unreadMobile }}</span>
-                        @endif
-                    </a>
-                    <span class="text-gray-400">{{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full px-4 py-2 bg-white/5 border border-white/10 text-white rounded-xl font-bold hover:bg-white/10 transition-all text-left">
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <script>
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-    </script>
-
-    <!-- Main Content -->
-    <div class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
-        <div class="container mx-auto max-w-7xl">
+@section('content')
             <!-- Welcome Banner -->
             <div class="relative overflow-hidden rounded-2xl md:rounded-[2rem] p-6 md:p-12 bg-gradient-to-br from-green-500/10 via-green-600/5 to-transparent border border-green-500/20 mb-6 md:mb-8">
                 <h1 class="text-3xl md:text-4xl lg:text-6xl font-extrabold leading-tight tracking-tighter mb-2 md:mb-3">
@@ -266,8 +173,4 @@
                     </div>
                 @endif
             </div>
-        </div>
-    </div>
-
-</body>
-</html>
+@endsection

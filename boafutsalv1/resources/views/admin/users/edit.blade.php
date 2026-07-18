@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User - Admin BOA Futsal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
-</head>
-<body class="bg-[#050505] text-white">
+@extends('layouts.admin')
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between">
-                <a href="/admin/dashboard" class="text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span> <span class="text-sm text-gray-500">Admin</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+@section('title', 'Edit User')
 
-    <!-- Main Content -->
-    <div class="pt-32 pb-20 px-6">
-        <div class="container mx-auto max-w-2xl">
+@section('content')
             <a href="{{ route('admin.users.index') }}" class="inline-flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors mb-8">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -122,8 +99,4 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-
-</body>
-</html>
+@endsection

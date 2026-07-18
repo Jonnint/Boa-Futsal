@@ -1,40 +1,8 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Masuk - BOA Futsal Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
-</head>
-<body class="bg-[#050505] text-white">
+@extends('layouts.admin')
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between">
-                <a href="/admin/dashboard" class="text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span> <span class="text-sm text-gray-500">Admin</span>
-                </a>
-                <div class="flex items-center gap-4">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    <a href="/admin/bookings" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Kelola Booking</a>
-                    <a href="/admin/users" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Kelola User</a>
-                    <a href="/admin/messages" class="text-sm font-medium text-green-400 transition-colors">Pesan Masuk</a>
-                    <span class="text-gray-600">|</span>
-                    <span class="text-sm text-gray-400">{{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl font-bold text-sm hover:bg-white/10 transition-all">Logout</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
+@section('title', 'Pesan Masuk')
 
-    <div class="pt-32 pb-20 px-6">
-        <div class="container mx-auto max-w-5xl">
+@section('content')
 
             <!-- Header -->
             <div class="relative overflow-hidden rounded-[2rem] p-8 md:p-12 bg-gradient-to-br from-green-500/10 via-green-600/5 to-transparent border border-green-500/20 mb-8">
@@ -134,8 +102,4 @@
                 </div>
             @endif
 
-        </div>
-    </div>
-
-</body>
-</html>
+@endsection
