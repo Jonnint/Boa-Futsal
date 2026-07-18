@@ -22,8 +22,13 @@
                 
                 <div class="flex items-center gap-4">
                     <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    <span class="text-gray-600">|</span>
-                    <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
+                    @auth
+                        <span class="text-gray-600">|</span>
+                        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
+                    @else
+                        <span class="text-gray-600">|</span>
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Login</a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -87,6 +92,32 @@
                         <h1 class="text-3xl font-extrabold mb-6">Detail Booking</h1>
 
                         <div class="space-y-4">
+                            <!-- Guest or Member Info -->
+                            @if($booking->booking_type === 'guest')
+                            <div class="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                                <p class="text-sm font-bold text-blue-400 mb-3">📋 Informasi Pemesan</p>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Nama:</span>
+                                        <span class="font-bold text-white">{{ $booking->guest_name }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Email:</span>
+                                        <span class="font-bold text-white">{{ $booking->guest_email }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Telepon:</span>
+                                        <span class="font-bold text-white">{{ $booking->guest_phone }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @else
+                            <div class="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
+                                <p class="text-sm font-bold text-green-400">✓ Booking Member</p>
+                                <p class="text-xs text-gray-400 mt-1">Oleh: {{ $booking->user->name }}</p>
+                            </div>
+                            @endif
+
                             <div class="flex items-start gap-4">
                                 <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
                                     <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,13 +200,33 @@
                 <!-- Actions -->
                 <div class="lg:col-span-1">
                     <div class="sticky top-32 space-y-4">
-                        <a href="{{ route('dashboard') }}" class="block w-full px-6 py-3 bg-green-500 text-black rounded-xl font-bold text-center hover:bg-green-400 transition-all">
-                            Kembali ke Dashboard
-                        </a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="block w-full px-6 py-3 bg-green-500 text-black rounded-xl font-bold text-center hover:bg-green-400 transition-all">
+                                Kembali ke Dashboard
+                            </a>
 
-                        <a href="{{ route('bookings.index') }}" class="block w-full px-6 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-bold text-center hover:bg-white/10 transition-all">
-                            Lihat Semua Booking
-                        </a>
+                            <a href="{{ route('bookings.index') }}" class="block w-full px-6 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-bold text-center hover:bg-white/10 transition-all">
+                                Lihat Semua Booking
+                            </a>
+                        @else
+                            <a href="/" class="block w-full px-6 py-3 bg-green-500 text-black rounded-xl font-bold text-center hover:bg-green-400 transition-all">
+                                Kembali ke Beranda
+                            </a>
+
+                            <div class="p-6 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                                <p class="text-blue-400 text-sm font-bold mb-2">📧 Booking Anda</p>
+                                <p class="text-xs text-gray-400 mb-3">Simpan halaman ini atau catat nomor booking Anda</p>
+                                <p class="text-white font-mono text-lg">#{!! str_pad($booking->id_booking, 6, '0', STR_PAD_LEFT) !!}</p>
+                            </div>
+
+                            <div class="p-6 bg-green-500/10 border border-green-500/20 rounded-xl">
+                                <p class="text-green-400 text-sm font-bold mb-2">💡 Ingin Join Member?</p>
+                                <p class="text-xs text-gray-400 mb-3">Dapatkan harga spesial dan kelola booking lebih mudah</p>
+                                <a href="{{ route('register') }}" class="block w-full px-4 py-2 bg-green-500 text-black rounded-lg font-bold text-center hover:bg-green-400 transition-all text-sm">
+                                    Daftar Sekarang
+                                </a>
+                            </div>
+                        @endauth
 
                         @if($booking->status == 'pending')
                         <div class="p-6 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">

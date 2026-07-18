@@ -20,6 +20,10 @@ class Booking extends Model
         'is_member_price',
         'status',
         'notes',
+        'guest_name',
+        'guest_email',
+        'guest_phone',
+        'booking_type',
     ];
 
     protected $casts = [

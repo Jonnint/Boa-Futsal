@@ -40,13 +40,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    // Booking routes
+    // Booking routes - index requires auth to view user's bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-    Route::get('/bookings/create/{field}', [BookingController::class, 'create'])->name('bookings.create');
-    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-    Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
-    Route::get('/api/field-schedule/{field}/{date}', [BookingController::class, 'getFieldSchedule'])->name('bookings.schedule');
 });
+
+// Public booking routes - anyone can create bookings
+Route::get('/bookings/create/{field}', [BookingController::class, 'create'])->name('bookings.create');
+Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+Route::get('/api/field-schedule/{field}/{date}', [BookingController::class, 'getFieldSchedule'])->name('bookings.schedule');
 
 // Public API for field status (no auth required)
 Route::get('/api/field-status', [BookingController::class, 'getCurrentFieldStatus'])->name('field.status');

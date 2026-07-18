@@ -20,12 +20,25 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        // Determine if user is logged in
+        $isLoggedIn = Auth::check();
+        
+        // Validation rules
+        $rules = [
             'field_id' => 'required|exists:fields,id_field',
             'booking_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required',
             'duration_hours' => 'required|integer|min:1|max:8',
-        ]);
+        ];
+        
+        // Add guest information validation if user is not logged in
+        if (!$isLoggedIn) {
+            $rules['guest_name'] = 'required|string|max:255';
+            $rules['guest_email'] = 'required|email|max:255';
+            $rules['guest_phone'] = 'required|string|max:20';
+        }
+        
+        $request->validate($rules);
 
         $field = Field::findOrFail($request->field_id);
         $bookingDate = Carbon::parse($request->booking_date);
@@ -70,14 +83,13 @@ class BookingController extends Controller
             return back()->withInput()->with('error', 'Harga tidak ditemukan untuk waktu yang dipilih.');
         }
 
-        // Calculate total price
-        $isMember = Auth::user()->is_member;
+        // Calculate total price - only members get discount
+        $isMember = $isLoggedIn && Auth::user()->is_member;
         $pricePerHour = $isMember ? $price->price_member : $price->price_regular;
         $totalPrice = $pricePerHour * $request->duration_hours;
 
-        // Create booking
-        $booking = Booking::create([
-            'user_id' => Auth::id(),
+        // Prepare booking data
+        $bookingData = [
             'field_id' => $request->field_id,
             'booking_date' => $bookingDate->format('Y-m-d'),
             'start_time' => $startTime->format('H:i'),
@@ -88,18 +100,53 @@ class BookingController extends Controller
             'is_member_price' => $isMember,
             'status' => 'pending',
             'notes' => $request->notes,
-        ]);
+        ];
+        
+        // Add user_id or guest information
+        if ($isLoggedIn) {
+            $bookingData['user_id'] = Auth::id();
+            $bookingData['booking_type'] = 'member';
+        } else {
+            $bookingData['guest_name'] = $request->guest_name;
+            $bookingData['guest_email'] = $request->guest_email;
+            $bookingData['guest_phone'] = $request->guest_phone;
+            $bookingData['booking_type'] = 'guest';
+        }
 
-        return redirect()->route('bookings.show', $booking->id_booking)
-            ->with('success', 'Booking berhasil dibuat! Silakan lakukan pembayaran.');
+        // Create booking
+        $booking = Booking::create($bookingData);
+
+        // Different flow for guest vs member
+        if (!$isLoggedIn) {
+            // Guest booking - redirect to WhatsApp for payment confirmation
+            $whatsappNumber = env('WHATSAPP_NUMBER', '6281234567890');
+            $bookingDetails = "Halo, saya ingin konfirmasi booking:\n\n" .
+                "Nama: {$booking->guest_name}\n" .
+                "Email: {$booking->guest_email}\n" .
+                "Telepon: {$booking->guest_phone}\n" .
+                "Lapangan: {$field->name}\n" .
+                "Tanggal: " . \Carbon\Carbon::parse($booking->booking_date)->format('d F Y') . "\n" .
+                "Waktu: " . date('H:i', strtotime($booking->start_time)) . " - " . date('H:i', strtotime($booking->end_time)) . "\n" .
+                "Durasi: {$booking->duration_hours} jam\n" .
+                "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
+                "Booking ID: #{$booking->id_booking}";
+            
+            $whatsappUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($bookingDetails);
+            
+            return redirect()->away($whatsappUrl);
+        } else {
+            // Member booking - redirect to booking detail page
+            return redirect()->route('bookings.show', $booking->id_booking)
+                ->with('success', 'Booking berhasil dibuat! Silakan lakukan pembayaran.');
+        }
     }
 
     public function show($id)
     {
         $booking = Booking::with(['field', 'payment'])->findOrFail($id);
         
-        // Check if user owns this booking
-        if ($booking->user_id !== Auth::id()) {
+        // Check if user owns this booking (for logged in users) or allow guest access
+        if ($booking->user_id && Auth::check() && $booking->user_id !== Auth::id()) {
             abort(403);
         }
 
@@ -160,7 +207,9 @@ class BookingController extends Controller
                 'field_name' => $field->name,
                 'is_occupied' => $currentBooking ? true : false,
                 'current_booking' => $currentBooking ? [
-                    'user_name' => $currentBooking->user->name,
+                    'user_name' => $currentBooking->user_id 
+                        ? $currentBooking->user->name 
+                        : $currentBooking->guest_name,
                     'start_time' => date('H:i', strtotime($currentBooking->start_time)),
                     'end_time' => date('H:i', strtotime($currentBooking->end_time)),
                     'remaining_minutes' => $this->calculateRemainingMinutes($currentBooking->end_time, $currentTime),

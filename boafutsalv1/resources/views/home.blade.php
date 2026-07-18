@@ -630,12 +630,8 @@
 
             modalPriceContent.innerHTML = priceHTML;
 
-            // Set booking button link
-            @auth
-                modalBookingButton.href = `/bookings/create/${fieldId}`;
-            @else
-                modalBookingButton.href = `/login`;
-            @endauth
+            // Set booking button link - everyone can book now
+            modalBookingButton.href = `/bookings/create/${fieldId}`;
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');

@@ -115,7 +115,16 @@
                                 @forelse($recentBookings as $booking)
                                 <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm">#{{ $booking->id_booking }}</td>
-                                    <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm">{{ $booking->user->name }}</td>
+                                    <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm">
+                                        @if($booking->booking_type === 'guest')
+                                            <span class="flex items-center gap-1">
+                                                {{ $booking->guest_name }}
+                                                <span class="px-1.5 py-0.5 bg-blue-500/10 text-blue-400 rounded text-[8px] font-bold">GUEST</span>
+                                            </span>
+                                        @else
+                                            {{ $booking->user->name }}
+                                        @endif
+                                    </td>
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm hidden sm:table-cell">{{ $booking->field->name }}</td>
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm hidden md:table-cell">{{ \Carbon\Carbon::parse($booking->booking_date)->format('d M Y') }}</td>
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm hidden lg:table-cell">{{ date('H:i', strtotime($booking->start_time)) }} - {{ date('H:i', strtotime($booking->end_time)) }}</td>

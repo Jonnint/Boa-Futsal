@@ -36,8 +36,22 @@
                                 <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm whitespace-nowrap hidden md:table-cell">#{{ $booking->id_booking }}</td>
                                     <td class="py-3 md:py-4 px-2 md:px-4 whitespace-nowrap">
-                                        <div class="text-xs md:text-sm font-bold">{{ $booking->user->name }}</div>
-                                        <div class="text-[10px] md:text-xs text-gray-500">{{ $booking->user->email }}</div>
+                                        @if($booking->booking_type === 'guest')
+                                            <div class="text-xs md:text-sm font-bold flex items-center gap-1">
+                                                {{ $booking->guest_name }}
+                                                <span class="px-1.5 py-0.5 bg-blue-500/10 text-blue-400 rounded text-[8px] md:text-[10px] font-bold">GUEST</span>
+                                            </div>
+                                            <div class="text-[10px] md:text-xs text-gray-500">{{ $booking->guest_email }}</div>
+                                            <div class="text-[10px] md:text-xs text-gray-500">{{ $booking->guest_phone }}</div>
+                                        @else
+                                            <div class="text-xs md:text-sm font-bold flex items-center gap-1">
+                                                {{ $booking->user->name }}
+                                                @if($booking->user->is_member)
+                                                    <span class="px-1.5 py-0.5 bg-green-500/10 text-green-400 rounded text-[8px] md:text-[10px] font-bold">MEMBER</span>
+                                                @endif
+                                            </div>
+                                            <div class="text-[10px] md:text-xs text-gray-500">{{ $booking->user->email }}</div>
+                                        @endif
                                     </td>
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm whitespace-nowrap hidden sm:table-cell">{{ $booking->field->name }}</td>
                                     <td class="py-3 md:py-4 px-2 md:px-4 text-xs md:text-sm whitespace-nowrap">
