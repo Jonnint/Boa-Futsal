@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking {{ $field->name }} - BOA Futsal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -22,6 +22,13 @@
         /* Native select dark fallback (Firefox / non-Chromium) */
         select {
             color-scheme: dark;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234ade80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
         }
         select option {
             background-color: #121212;
@@ -29,304 +36,331 @@
         }
     </style>
 </head>
-<body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black">
+<body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black relative overflow-x-hidden min-h-screen flex flex-col">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-4 md:py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="flex items-center justify-between">
-                <a href="/" class="text-xl md:text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-4">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    @auth
-                        <span class="text-gray-600">|</span>
-                        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
-                    @else
-                        <span class="text-gray-600">|</span>
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Login</a>
-                    @endauth
-                </div>
+    <!-- Background Orbs -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-green-900/20 rounded-full blur-[150px] pointer-events-none z-0"></div>
 
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-400 hover:text-green-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
+    <x-public-navbar simple="true" backUrl="/#fields" backText="Kembali ke Daftar Lapangan" />
 
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pt-4 border-t border-white/10">
-                <div class="flex flex-col gap-3">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Login</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+    @php
+    if (!function_exists('getSessionName')) {
+        function getSessionName($timeString) {
+            $hour = (int) substr($timeString, 0, 2);
+            if ($hour < 12) return 'Sesi Pagi';
+            if ($hour < 15) return 'Sesi Siang';
+            if ($hour < 18) return 'Sesi Sore';
+            return 'Sesi Malam';
+        }
+    }
+    @endphp
 
     <!-- Main Content -->
-    <div class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
-        <div class="container mx-auto max-w-5xl">
-            <!-- Back Button -->
-            <a href="/" class="inline-flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors mb-6 md:mb-8 text-sm md:text-base">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                Kembali ke Beranda
-            </a>
+    <div class="pt-28 md:pt-36 pb-16 md:pb-24 px-4 md:px-6 relative z-10 flex-grow">
+        <div class="container mx-auto max-w-[1100px]">
+            
+            <div class="mb-8">
+                <a href="/#fields" class="inline-flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors text-sm font-bold bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Kembali
+                </a>
+            </div>
 
-            <div class="grid lg:grid-cols-5 gap-6 md:gap-8">
-                <!-- Field Info -->
-                <div class="lg:col-span-2">
-                    <div class="lg:sticky lg:top-24">
-                        <div class="bg-white/5 border border-white/10 rounded-xl md:rounded-[2rem] overflow-hidden">
-                            <img src="{{ asset($field->image) }}" class="w-full h-48 md:h-64 object-cover">
-                            <div class="p-4 md:p-6">
-                                <h2 class="text-xl md:text-2xl font-bold mb-2">{{ $field->name }}</h2>
-                                <p class="text-gray-400 text-xs md:text-sm mb-4">{{ $field->description }}</p>
-                                <div class="flex items-center gap-2 text-xs md:text-sm text-gray-500">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    {{ $field->surface_type }}
+            <div class="grid lg:grid-cols-12 gap-8 lg:gap-10">
+                <!-- Left Panel: Field Info & Price -->
+                <div class="lg:col-span-5">
+                    <div class="lg:sticky lg:top-32 space-y-6">
+                        
+                        <!-- Field Card -->
+                        <div class="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl group">
+                            <div class="relative h-64 md:h-72 overflow-hidden">
+                                <img src="{{ asset($field->image) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
+                                <div class="absolute bottom-5 left-5 right-5">
+                                    <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-1">{{ $field->name }}</h2>
+                                    <div class="flex items-center gap-2 text-xs md:text-sm font-bold text-green-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        {{ $field->surface_type }}
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-400 text-sm leading-relaxed font-medium">{{ $field->description }}</p>
                             </div>
                         </div>
 
-                        <!-- Price Info -->
-                        <div class="mt-4 md:mt-6 bg-white/5 border border-white/10 rounded-xl md:rounded-[2rem] p-4 md:p-6">
-                            <h3 class="font-bold mb-3 md:mb-4 flex items-center gap-2 text-sm md:text-base">
-                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                Informasi Harga
+                        <!-- Price Info Card -->
+                        <div class="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-6 shadow-2xl">
+                            <h3 class="font-extrabold mb-5 flex items-center gap-2 text-lg text-white">
+                                <div class="w-8 h-8 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                Rincian Harga
                             </h3>
-                            <div class="space-y-3 text-xs md:text-sm">
+                            
+                            <div class="space-y-6">
                                 @foreach($field->prices->groupBy('day_type') as $dayType => $prices)
                                     <div>
-                                        <p class="text-green-400 font-bold mb-2">{{ $dayType == 'weekday' ? 'Senin - Jumat' : 'Sabtu - Minggu' }}</p>
-                                        @foreach($prices as $price)
-                                            <div class="flex justify-between text-gray-400 mb-1">
-                                                <span>{{ date('H:i', strtotime($price->start_time)) }} - {{ date('H:i', strtotime($price->end_time)) }}</span>
-                                                <span class="font-bold text-white">Rp {{ number_format($price->price_regular, 0, ',', '.') }}</span>
-                                            </div>
-                                        @endforeach
+                                        <div class="flex items-center gap-2 mb-3">
+                                            @if($dayType == 'weekday')
+                                                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                <p class="text-green-400 font-extrabold text-sm uppercase tracking-widest">Senin - Jumat</p>
+                                            @else
+                                                <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                                <p class="text-yellow-400 font-extrabold text-sm uppercase tracking-widest">Sabtu - Minggu</p>
+                                            @endif
+                                        </div>
+                                        <div class="space-y-2.5">
+                                            @foreach($prices as $price)
+                                                <div class="flex items-center justify-between p-3.5 bg-black/40 rounded-xl border border-white/10 hover:border-{{ $dayType == 'weekday' ? 'green' : 'yellow' }}-500/50 hover:bg-{{ $dayType == 'weekday' ? 'green' : 'yellow' }}-500/5 transition-all group">
+                                                    <div class="flex flex-col">
+                                                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">{{ getSessionName($price->start_time) }}</span>
+                                                        <span class="text-sm font-medium text-gray-200">{{ date('H:i', strtotime($price->start_time)) }} - {{ date('H:i', strtotime($price->end_time)) }} WIB</span>
+                                                    </div>
+                                                    <div class="flex items-baseline gap-1.5">
+                                                        <span class="text-base font-extrabold text-white group-hover:text-{{ $dayType == 'weekday' ? 'green' : 'yellow' }}-400 transition-colors">Rp {{ number_format($price->price_regular, 0, ',', '.') }}</span>
+                                                        <span class="text-xs font-medium text-gray-500">/ Jam</span>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 @endforeach
-                                @if(auth()->check() && auth()->user()->is_member)
-                                    <div class="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-xl">
-                                        <p class="text-green-400 text-xs font-bold">✓ Harga Member Aktif</p>
-                                    </div>
-                                @endif
                             </div>
+
+                            @if(auth()->check() && auth()->user()->is_member)
+                                <div class="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-green-400 text-sm font-extrabold">Status Member Aktif</p>
+                                            <p class="text-xs text-gray-400 font-medium">Anda berhak mendapat diskon!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
 
-                <!-- Booking Form -->
-                <div class="lg:col-span-3">
-                    <div class="bg-white/5 border border-white/10 rounded-xl md:rounded-[2rem] p-6 md:p-8">
-                        <h1 class="text-2xl md:text-3xl font-extrabold mb-2">Booking Lapangan</h1>
-                        <p class="text-gray-400 mb-6 md:mb-8 text-sm md:text-base">Isi form di bawah untuk booking lapangan</p>
+                <!-- Right Panel: Booking Form -->
+                <div class="lg:col-span-7">
+                    <div class="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-6 md:p-10 shadow-2xl relative">
+                        <div class="mb-8">
+                            <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Form <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Booking</span></h1>
+                            <p class="text-gray-400 font-medium">Lengkapi detail di bawah ini untuk mengamankan slot lapanganmu.</p>
+                        </div>
 
                         @if(session('error'))
-                            <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
-                                {{ session('error') }}
+                            <div class="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3">
+                                <svg class="w-5 h-5 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <p class="text-red-400 text-sm font-medium">{{ session('error') }}</p>
                             </div>
                         @endif
 
-                        <form action="{{ route('bookings.store') }}" method="POST" class="space-y-5 md:space-y-6">
+                        <form action="{{ route('bookings.store') }}" method="POST" class="space-y-6">
                             @csrf
                             <input type="hidden" name="field_id" value="{{ $field->id_field }}">
 
                             <!-- Guest Information (if not logged in) -->
                             @guest
-                            <div class="p-4 md:p-6 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
-                                <h3 class="text-sm md:text-base font-bold mb-4 text-yellow-400 flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                    </svg>
-                                    Informasi Kontak
-                                </h3>
-                                <div class="space-y-4">
+                            <div class="p-6 bg-yellow-500/5 border border-yellow-500/20 rounded-2xl backdrop-blur-md mb-8">
+                                <div class="flex items-center justify-between mb-6">
+                                    <h3 class="text-base font-extrabold text-yellow-400 flex items-center gap-2 uppercase tracking-widest">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                        Data Pemesan
+                                    </h3>
+                                </div>
+                                
+                                <div class="space-y-5">
                                     <div>
-                                        <label class="block text-xs md:text-sm font-medium mb-2">Nama Lengkap</label>
+                                        <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">Nama Lengkap</label>
                                         <input 
                                             type="text" 
                                             name="guest_name" 
                                             value="{{ old('guest_name') }}"
                                             required
                                             placeholder="Masukkan nama lengkap"
-                                            class="w-full px-4 py-3 bg-[#121212] border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base"
+                                            class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 focus:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all font-medium text-sm md:text-base"
                                         >
                                         @error('guest_name')
-                                            <p class="mt-2 text-xs text-red-400">{{ $message }}</p>
+                                            <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     
-                                    <div>
-                                        <label class="block text-xs md:text-sm font-medium mb-2">Email</label>
-                                        <input 
-                                            type="email" 
-                                            name="guest_email" 
-                                            value="{{ old('guest_email') }}"
-                                            required
-                                            placeholder="contoh@email.com"
-                                            class="w-full px-4 py-3 bg-[#121212] border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base"
-                                        >
-                                        @error('guest_email')
-                                            <p class="mt-2 text-xs text-red-400">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="block text-xs md:text-sm font-medium mb-2">Nomor Telepon / WhatsApp</label>
-                                        <input 
-                                            type="tel" 
-                                            name="guest_phone" 
-                                            value="{{ old('guest_phone') }}"
-                                            required
-                                            placeholder="08xx-xxxx-xxxx"
-                                            class="w-full px-4 py-3 bg-[#121212] border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base"
-                                        >
-                                        @error('guest_phone')
-                                            <p class="mt-2 text-xs text-red-400">{{ $message }}</p>
-                                        @enderror
+                                    <div class="grid md:grid-cols-2 gap-5">
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">Email</label>
+                                            <input 
+                                                type="email" 
+                                                name="guest_email" 
+                                                value="{{ old('guest_email') }}"
+                                                required
+                                                placeholder="contoh@email.com"
+                                                class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 focus:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all font-medium text-sm md:text-base"
+                                            >
+                                            @error('guest_email')
+                                                <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">Nomor WhatsApp</label>
+                                            <input 
+                                                type="tel" 
+                                                name="guest_phone" 
+                                                value="{{ old('guest_phone') }}"
+                                                required
+                                                placeholder="08xx-xxxx-xxxx"
+                                                class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 focus:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all font-medium text-sm md:text-base"
+                                            >
+                                            @error('guest_phone')
+                                                <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                                 
-                                <div class="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                                    <p class="text-xs text-green-400 mb-1">
-                                        <strong>✓ Setelah booking,</strong> Anda akan diarahkan ke WhatsApp untuk konfirmasi pembayaran di kasir
-                                    </p>
-                                </div>
-                                
-                                <div class="mt-3 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                                    <p class="text-xs text-blue-400">
-                                        💡 <strong>Ingin mendapatkan harga member?</strong> 
-                                        <a href="{{ route('login') }}" class="underline hover:text-blue-300">Login</a> atau 
-                                        <a href="{{ route('register') }}" class="underline hover:text-blue-300">Daftar</a> untuk join membership!
+                                <div class="mt-6 p-4 bg-black/40 border border-white/5 rounded-xl">
+                                    <p class="text-sm text-gray-400 font-medium">
+                                        💡 <strong class="text-white">Ingin dapat diskon member?</strong> <br class="md:hidden">
+                                        <a href="{{ route('login') }}" class="text-green-400 hover:text-green-300 font-bold underline">Login</a> atau 
+                                        <a href="{{ route('register') }}" class="text-green-400 hover:text-green-300 font-bold underline">Daftar Akun</a> sekarang!
                                     </p>
                                 </div>
                             </div>
                             @endguest
 
                             @auth
-                            <div class="p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
-                                <p class="text-sm text-green-400">
-                                    ✓ Login sebagai: <strong>{{ auth()->user()->name }}</strong>
-                                    @if(auth()->user()->is_member)
-                                        <span class="ml-2 px-2 py-1 bg-green-500 text-black text-xs font-bold rounded">MEMBER</span>
-                                    @endif
-                                </p>
-                                @if(auth()->user()->is_member)
-                                    <p class="text-xs text-green-300 mt-2">🎉 Anda akan mendapat harga member!</p>
-                                @endif
+                            <div class="mb-8 p-5 bg-green-500/10 border border-green-500/20 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center border border-white/10 shrink-0">
+                                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-1">Booking Sebagai</p>
+                                        <p class="text-base font-extrabold text-white flex items-center gap-2">
+                                            {{ auth()->user()->name }}
+                                            @if(auth()->user()->is_member)
+                                                <span class="px-2 py-0.5 bg-green-500 text-black text-[10px] font-black rounded uppercase tracking-widest">Member</span>
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             @endauth
 
-                            <!-- Date -->
-                            <div>
-                                <label class="block text-sm font-bold mb-2">Tanggal Booking</label>
-                                <input 
-                                    type="date" 
-                                    name="booking_date" 
-                                    id="booking_date"
-                                    min="{{ date('Y-m-d') }}"
-                                    required
-                                    class="w-full px-4 py-3 bg-[#121212] border border-white/10 rounded-xl text-white focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all hover:border-green-500/50 cursor-pointer text-sm md:text-base"
-                                    style="color-scheme: dark;"
-                                >
-                                @error('booking_date')
-                                    <p class="mt-2 text-xs md:text-sm text-red-400">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Schedule Info -->
-                            <div id="scheduleInfo" class="hidden">
-                                <div class="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-                                    <h4 class="text-xs md:text-sm font-bold mb-3 text-blue-400">Jadwal Terboking Hari Ini:</h4>
-                                    <div id="bookedSlots" class="space-y-2 text-xs md:text-sm"></div>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <!-- Date -->
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Tanggal Booking</label>
+                                    <input 
+                                        type="date" 
+                                        name="booking_date" 
+                                        id="booking_date"
+                                        min="{{ date('Y-m-d') }}"
+                                        required
+                                        class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium text-sm md:text-base cursor-pointer"
+                                    >
+                                    @error('booking_date')
+                                        <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                            </div>
 
-                            <!-- Time -->
-                            <div>
-                                <label class="block text-sm font-bold mb-2">Jam Mulai</label>
-                                <select 
-                                    name="start_time" 
-                                    id="start_time"
-                                    required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base"
-                                >
-                                    <option value="" disabled selected>Pilih Jam</option>
-                                    @for($i = 7; $i <= 23; $i++)
-                                        <option value="{{ sprintf('%02d:00', $i) }}">{{ sprintf('%02d:00', $i) }}</option>
-                                    @endfor
-                                </select>
-                                @error('start_time')
-                                    <p class="mt-2 text-xs md:text-sm text-red-400">{{ $message }}</p>
-                                @enderror
-                            </div>
+                                <!-- Schedule Info (AJAX) -->
+                                <div id="scheduleInfo" class="md:col-span-2 hidden transition-all duration-500">
+                                    <div class="p-5 bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm">
+                                        <h4 class="text-xs font-extrabold text-white mb-3 uppercase tracking-widest flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            Jadwal Sudah Terisi
+                                        </h4>
+                                        <div id="bookedSlots" class="flex flex-wrap gap-2">
+                                            <!-- Dynamically filled by JS -->
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <!-- Duration -->
-                            <div>
-                                <label class="block text-sm font-bold mb-2">Durasi (Jam)</label>
-                                <select 
-                                    name="duration_hours" 
-                                    id="duration_hours"
-                                    required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base"
-                                >
-                                    <option value="" disabled selected>Pilih Durasi</option>
-                                    @for($i = 1; $i <= 8; $i++)
-                                        <option value="{{ $i }}">{{ $i }} Jam</option>
-                                    @endfor
-                                </select>
-                                @error('duration_hours')
-                                    <p class="mt-2 text-xs md:text-sm text-red-400">{{ $message }}</p>
-                                @enderror
+                                <!-- Time -->
+                                <div>
+                                    <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Jam Mulai</label>
+                                    <select 
+                                        name="start_time" 
+                                        id="start_time"
+                                        required
+                                        class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium text-sm md:text-base cursor-pointer"
+                                    >
+                                        <option value="" disabled selected>Pilih Jam</option>
+                                        @for($i = 7; $i <= 23; $i++)
+                                            <option value="{{ sprintf('%02d:00', $i) }}">{{ sprintf('%02d:00', $i) }} WIB</option>
+                                        @endfor
+                                    </select>
+                                    @error('start_time')
+                                        <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Duration -->
+                                <div>
+                                    <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Durasi (Jam)</label>
+                                    <select 
+                                        name="duration_hours" 
+                                        id="duration_hours"
+                                        required
+                                        class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium text-sm md:text-base cursor-pointer"
+                                    >
+                                        <option value="" disabled selected>Pilih Durasi</option>
+                                        @for($i = 1; $i <= 8; $i++)
+                                            <option value="{{ $i }}">{{ $i }} Jam</option>
+                                        @endfor
+                                    </select>
+                                    @error('duration_hours')
+                                        <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
 
                             <!-- Notes -->
                             <div>
-                                <label class="block text-sm font-bold mb-2">Catatan (Opsional)</label>
+                                <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">Catatan (Opsional)</label>
                                 <textarea 
                                     name="notes" 
                                     rows="3"
-                                    placeholder="Tambahkan catatan jika ada..."
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base"
+                                    placeholder="Tambahkan catatan khusus jika ada..."
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium text-sm md:text-base resize-none"
                                 ></textarea>
                             </div>
 
                             <!-- Submit -->
-                            @guest
-                            <button 
-                                type="submit"
-                                class="w-full px-6 py-3 md:py-4 bg-green-500 text-black rounded-xl font-bold text-base md:text-lg hover:bg-green-400 transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-2"
-                            >
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                                </svg>
-                                Booking & Konfirmasi via WhatsApp
-                            </button>
-                            @else
-                            <button 
-                                type="submit"
-                                class="w-full px-6 py-3 md:py-4 bg-green-500 text-black rounded-xl font-bold text-base md:text-lg hover:bg-green-400 transition-all shadow-lg shadow-green-500/20"
-                            >
-                                Lanjutkan ke Pembayaran
-                            </button>
-                            @endguest
+                            <div class="pt-4">
+                                <button 
+                                    type="submit"
+                                    class="w-full py-4 bg-gradient-to-r from-green-400 to-green-600 text-black rounded-xl font-extrabold text-base md:text-lg hover:from-green-300 hover:to-green-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2 group"
+                                >
+                                    @guest
+                                        Lanjutkan ke Pembayaran
+                                    @else
+                                        Booking Sekarang
+                                    @endguest
+                                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </button>
+                                
+                                @guest
+                                <p class="text-center text-xs text-gray-500 mt-4 font-medium">
+                                    Setelah klik tombol, Anda akan diarahkan ke WhatsApp kasir.
+                                </p>
+                                @endguest
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -334,9 +368,14 @@
         </div>
     </div>
 
+    <!-- Footer Simple -->
+    <footer class="py-6 border-t border-white/5 text-center mt-auto z-10 relative">
+        <p class="text-xs text-gray-600 font-medium">© {{ date('Y') }} BOA Futsal. All rights reserved.</p>
+    </footer>
+
     <script>
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
+        document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
+            document.getElementById('mobileMenu')?.classList.toggle('hidden');
         });
 
         const fieldId = {{ $field->id_field }};
@@ -346,7 +385,10 @@
 
         dateInput.addEventListener('change', function() {
             const selectedDate = this.value;
-            if (!selectedDate) return;
+            if (!selectedDate) {
+                scheduleInfo.classList.add('hidden');
+                return;
+            }
 
             // Fetch booked schedules
             fetch(`/api/field-schedule/${fieldId}/${selectedDate}`)
@@ -355,17 +397,29 @@
                     if (data.length > 0) {
                         scheduleInfo.classList.remove('hidden');
                         bookedSlots.innerHTML = data.map(booking => {
-                            const statusColor = booking.status === 'confirmed' ? 'text-green-400' : 'text-yellow-400';
-                            const statusText = booking.status === 'confirmed' ? 'Confirmed' : 'Pending';
+                            const isConfirmed = booking.status === 'confirmed';
+                            const bgColor = isConfirmed ? 'bg-red-500/10' : 'bg-yellow-500/10';
+                            const borderColor = isConfirmed ? 'border-red-500/20' : 'border-yellow-500/20';
+                            const textColor = isConfirmed ? 'text-red-400' : 'text-yellow-400';
+                            const icon = isConfirmed 
+                                ? `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`
+                                : `<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                            
                             return `
-                                <div class="flex justify-between items-center p-2 bg-white/5 rounded-lg">
-                                    <span class="text-gray-300">${booking.start_time.substring(0,5)} - ${booking.end_time.substring(0,5)}</span>
-                                    <span class="${statusColor} text-xs font-bold">${statusText}</span>
+                                <div class="flex items-center gap-1.5 px-3 py-1.5 ${bgColor} border ${borderColor} rounded-lg ${textColor} text-xs font-bold">
+                                    ${icon}
+                                    ${booking.start_time.substring(0,5)} - ${booking.end_time.substring(0,5)}
                                 </div>
                             `;
                         }).join('');
                     } else {
-                        scheduleInfo.classList.add('hidden');
+                        scheduleInfo.classList.remove('hidden');
+                        bookedSlots.innerHTML = `
+                            <div class="flex items-center gap-2 px-3 py-2 bg-green-500/10 border border-green-500/20 rounded-lg text-green-400 text-xs font-bold w-full">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Seluruh slot waktu masih tersedia!
+                            </div>
+                        `;
                     }
                 })
                 .catch(error => {

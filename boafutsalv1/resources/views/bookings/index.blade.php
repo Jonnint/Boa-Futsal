@@ -12,44 +12,7 @@
 </head>
 <body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-4 md:py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="flex items-center justify-between">
-                <a href="/" class="text-xl md:text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-4">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    <span class="text-gray-600">|</span>
-                    <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-400 hover:text-green-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pt-4 border-t border-white/10">
-                <div class="flex flex-col gap-3">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <script>
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-    </script>
+    <x-public-navbar simple="true" backUrl="/" backText="Homepage" />
 
     <!-- Main Content -->
     <div class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">

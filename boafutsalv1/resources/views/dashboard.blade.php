@@ -13,60 +13,9 @@
 </head>
 <body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-4 md:py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="flex items-center justify-between">
-                <a href="/" class="text-xl md:text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-4">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Homepage
-                    </a>
-                    <span class="text-gray-600">|</span>
-                    <span class="text-sm text-gray-400">{{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl font-bold text-sm hover:bg-white/10 transition-all">
-                            Logout
-                        </button>
-                    </form>
-                </div>
+    <x-public-navbar simple="true" backUrl="/" backText="Homepage" />
 
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-400 hover:text-green-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
 
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pt-4 border-t border-white/10">
-                <div class="flex flex-col gap-3">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">
-                        Homepage
-                    </a>
-                    <span class="text-sm text-gray-400">{{ Auth::user()->name }}</span>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full px-4 py-2 bg-white/5 border border-white/10 text-white rounded-xl font-bold text-sm hover:bg-white/10 transition-all text-left">
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <script>
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-    </script>
 
     <!-- Main Content -->
     <div class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">

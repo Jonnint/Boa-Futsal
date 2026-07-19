@@ -12,27 +12,7 @@
 </head>
 <body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-6 bg-black/20 backdrop-blur-lg border-b border-white/5">
-        <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between">
-                <a href="/" class="text-2xl font-extrabold tracking-tighter text-green-400">
-                    BOA<span class="text-white">FUTSAL</span>
-                </a>
-                
-                <div class="flex items-center gap-4">
-                    <a href="/" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Homepage</a>
-                    @auth
-                        <span class="text-gray-600">|</span>
-                        <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Dashboard</a>
-                    @else
-                        <span class="text-gray-600">|</span>
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-400 hover:text-green-400 transition-colors">Login</a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+    <x-public-navbar simple="true" backUrl="/" backText="Homepage" />
 
     <!-- Main Content -->
     <div class="pt-32 pb-20 px-6">

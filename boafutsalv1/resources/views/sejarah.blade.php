@@ -15,14 +15,7 @@
 </head>
 <body class="bg-[#050505] text-white">
 
-    <nav class="fixed top-0 left-0 right-0 z-50 py-6 glass border-b border-white/5">
-        <div class="container mx-auto px-6 flex items-center justify-between">
-            <a href="/" class="text-2xl font-extrabold tracking-tighter text-green-400">
-                BOA<span class="text-white">FUTSAL</span>
-            </a>
-            <a href="/" class="text-sm font-medium hover:text-green-400 transition-colors">← Kembali ke Beranda</a>
-        </div>
-    </nav>
+    <x-public-navbar simple="true" backUrl="/" backText="← Kembali ke Beranda" />
 
     <section class="pt-32 pb-12">
         <div class="container mx-auto px-6">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,53 +20,13 @@
 </head>
 <body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black">
 
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6">
-    <div class="container mx-auto px-6">
-        <div class="flex items-center justify-between bg-black/20 backdrop-blur-lg border border-white/5 rounded-2xl px-6 py-3">
-            <div class="text-2xl font-extrabold tracking-tighter text-green-400">
-                BOA<span class="text-white">FUTSAL</span>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-10">
-                <a href="#home" class="text-sm font-medium hover:text-green-400 transition-colors">Home</a>
-                <a href="#facilities" class="text-sm font-medium hover:text-green-400 transition-colors">Fasilitas</a>
-                <a href="#fields" class="text-sm font-medium hover:text-green-400 transition-colors">Lapangan</a>
-                <a href="#contact" class="text-sm font-medium hover:text-green-400 transition-colors">Contact Us</a>
-                @auth
-                    <a href="{{ route('dashboard') }}" class="text-sm font-medium hover:text-green-400 transition-colors">Dashboard</a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-xl font-bold text-sm hover:bg-white/10 transition-all">Logout</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="px-5 py-2.5 bg-green-500 text-black rounded-xl font-bold text-sm hover:bg-green-400 transition-all shadow-lg shadow-green-500/20">Login</a>
-                @endauth
-            </div>
+    <x-public-navbar />
 
-            <button id="mobile-menu-btn" class="md:hidden p-2 text-green-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-        </div>
-
-        <div id="mobile-menu" class="hidden md:hidden mt-4 bg-black/90 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-xl">
-            <div class="flex flex-col p-4 space-y-4">
-                <a href="#home" class="mobile-link text-sm font-medium px-4 py-2 hover:bg-green-500/10 rounded-lg">Home</a>
-                <a href="#facilities" class="mobile-link text-sm font-medium px-4 py-2 hover:bg-green-500/10 rounded-lg">Fasilitas</a>
-                <a href="#fields" class="mobile-link text-sm font-medium px-4 py-2 hover:bg-green-500/10 rounded-lg">Lapangan</a>
-                <a href="#contact" class="mobile-link text-sm font-medium px-4 py-2 hover:bg-green-500/10 rounded-lg">Contact Us</a>
-                <a href="{{ route('login') }}" class="mobile-link bg-green-500 text-black px-4 py-3 rounded-xl font-bold text-center">Login</a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-[#050505]">
-        <!-- Background Image with Overlay -->
-        <div class="absolute inset-0 z-0">
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-transparent pb-32">
+        <!-- Background Image with Seamless Mask -->
+        <div class="absolute inset-0 z-0 pointer-events-none" style="mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent);">
             <img src="{{ asset('asset/img/landing.jfif') }}" alt="Background" class="w-full h-full object-cover object-center opacity-40">
-            <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/40 to-[#050505]"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/40 to-transparent"></div>
         </div>
 
         <div class="container mx-auto px-6 z-10 relative flex flex-col items-center text-center">
@@ -81,21 +41,21 @@
             
             <div class="flex flex-col sm:flex-row gap-4">
                 <!-- Primary Button -->
-                <a href="#fields" class="group flex items-center justify-center gap-3 px-8 py-4 bg-green-500 text-black font-bold text-sm tracking-widest uppercase transition-all hover:bg-green-400 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                <a href="#fields" class="group flex items-center justify-center gap-3 px-8 py-4 bg-green-500 text-black font-bold text-sm tracking-widest uppercase transition-all hover:bg-green-400 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] rounded-full">
                     <span class="w-3 h-3 rounded-full bg-black group-hover:scale-110 transition-transform"></span>
-                    Booking
+                    <span>Booking</span>
                 </a>
                 
                 <!-- Secondary Button -->
-                <a href="#fields" class="group flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-green-500/30 text-green-400 font-bold text-sm tracking-widest uppercase transition-all hover:border-green-500 hover:bg-green-500/10">
-                    <svg class="w-5 h-5 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm1 5A9 9 0 1116 2a9 9 0 010 18z"></path></svg>
-                    Jelajahi Lapangan
+                <a href="#fields" class="group flex items-center justify-center gap-3 px-8 py-4 bg-transparent border border-green-500/30 text-green-400 font-bold text-sm tracking-widest uppercase transition-all hover:border-green-500 hover:bg-green-500/10 rounded-full">
+                    <span>Jelajahi Lapangan</span>
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </a>
             </div>
         </div>
 
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
             <a href="#facilities" class="flex flex-col items-center opacity-50 hover:opacity-100 transition-opacity animate-bounce text-white hover:text-green-400">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -104,8 +64,14 @@
         </div>
     </section>
 
-    <section id="facilities" class="py-32 bg-[#050505]">
-        <div class="container mx-auto px-6">
+    <section id="facilities" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
+        <!-- Background Image with Seamless Mask -->
+        <div class="absolute inset-0 z-0" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent);">
+            <img src="{{ asset('asset/img/lapangan1.jfif') }}" alt="Background Fasilitas" class="w-full h-full object-cover object-center opacity-50">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 pointer-events-auto">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4">Fasilitas</h2>
                 <div class="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
@@ -113,7 +79,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Toilet -->
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-colors h-full flex flex-col">
+                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
                     <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     </div>
@@ -122,7 +88,7 @@
                 </div>
 
                 <!-- Mushola -->
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-colors h-full flex flex-col">
+                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
                     <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                     </div>
@@ -131,7 +97,7 @@
                 </div>
 
                 <!-- Kasir -->
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-colors h-full flex flex-col">
+                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
                     <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
@@ -140,7 +106,7 @@
                 </div>
 
                 <!-- Parkiran -->
-                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-colors h-full flex flex-col">
+                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
                     <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                     </div>
@@ -151,9 +117,9 @@
         </div>
     </section>
 
-    <section id="fields" class="relative py-32 bg-[#050505]">
+    <section id="fields" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
         <!-- Responsive Background with Glassmorphism and Seamless Mask -->
-        <div class="absolute inset-0 z-0 pointer-events-none" style="mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);">
+        <div class="absolute inset-0 z-0" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent);">
             <!-- Mobile Background -->
             <img src="{{ asset('asset/img/aboutus.jfif') }}" alt="Background Mobile" class="w-full h-full object-cover object-center md:hidden">
             <!-- Desktop Background -->
@@ -163,7 +129,7 @@
             <div class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-6 relative z-10 pointer-events-auto">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4">Pilih <span class="text-green-400">Arena</span> Kamu</h2>
                 <div class="w-20 h-1 bg-green-500 mx-auto rounded-full mb-4"></div>
@@ -256,26 +222,28 @@
     </div>
 </div>
 
-    <section id="contact" class="py-32 bg-[#050505] relative overflow-hidden">
-        <div class="absolute top-1/2 left-0 w-64 h-64 bg-green-500/5 rounded-full blur-[100px]"></div>
-        <div class="absolute bottom-0 right-0 w-64 h-64 bg-green-900/5 rounded-full blur-[100px]"></div>
+    <section id="contact" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
+        <!-- Background Transition & Glows -->
+        <div class="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-transparent via-[#050505] to-[#050505]" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);"></div>
+        <div class="absolute top-1/2 left-0 w-96 h-96 bg-green-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-green-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-6 relative z-10 pointer-events-auto">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">Contact <span class="text-green-400">Us</span></h2>
-                <div class="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
-                <p class="text-gray-500 mt-4 max-w-md mx-auto">Ada pertanyaan, mau collab, atau sekadar kasih komentar?</p>
+                <h2 class="text-4xl font-extrabold mb-4 text-white">Contact <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Us</span></h2>
+                <div class="w-20 h-1 bg-green-500 mx-auto rounded-full shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                <p class="text-gray-400 mt-4 max-w-md mx-auto font-medium">Ada pertanyaan, mau collab, atau sekadar kasih komentar?</p>
             </div>
 
             {{-- Tab Switcher --}}
             <div class="flex justify-center mb-10">
-                <div class="inline-flex bg-white/5 border border-white/10 rounded-2xl p-1 gap-1">
+                <div class="inline-flex bg-white/5 border border-white/10 rounded-full p-1.5 gap-1 backdrop-blur-md shadow-lg">
                     <button id="tab-general" onclick="switchTab('general')"
-                        class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 bg-green-500 text-black">
+                        class="px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.3)]">
                         Komentar Umum
                     </button>
                     <button id="tab-collab" onclick="switchTab('collab')"
-                        class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-gray-400 hover:text-white">
+                        class="px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 text-gray-400 hover:text-white hover:bg-white/10">
                         Collab & Sponsorship
                     </button>
                 </div>
@@ -289,98 +257,102 @@
             {{-- TAB: Komentar Umum --}}
             <div id="panel-general" class="max-w-5xl mx-auto">
                 <div class="grid lg:grid-cols-2 gap-8">
-                    <!-- Info Cards -->
-                    <!-- Interactive Map with Floating Info Card -->
-                    <div class="relative w-full h-[500px] lg:h-auto lg:min-h-[500px] rounded-[2rem] overflow-hidden border border-white/10 group">
+                    <!-- Info Cards & Interactive Map -->
+                    <div class="relative w-full h-[500px] lg:h-auto lg:min-h-[500px] rounded-[2rem] overflow-hidden border border-white/10 group shadow-2xl">
                         <!-- Google Maps iframe -->
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.7844146059635!2d106.8437021!3d-6.4729864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ea687f799a95%3A0xc58db16e109db14a!2sBoa%20Futsal!5e0!3m2!1sid!2sid!4v1620000000000!5m2!1sid!2sid" 
-                            class="absolute inset-0 w-full h-full grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" 
+                            class="absolute inset-0 w-full h-full grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" 
                             style="border:0;" 
                             allowfullscreen="" 
                             loading="lazy">
                         </iframe>
 
-                        <!-- Floating Info Card -->
-                        <div class="absolute bottom-6 left-6 right-6 lg:right-auto lg:w-[320px] bg-white/95 backdrop-blur-xl border border-white/20 p-6 rounded-2xl shadow-2xl transition-transform duration-500 hover:-translate-y-2 text-black">
-                            <div class="space-y-5">
+                        <!-- Floating Info Card (Dark Glassmorphism) -->
+                        <div class="absolute bottom-5 left-5 right-5 lg:right-auto lg:w-[280px] bg-black/60 backdrop-blur-2xl border border-white/10 p-5 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-transform duration-500 hover:-translate-y-2 text-white">
+                            <div class="space-y-4">
                                 <!-- Lokasi -->
                                 <div class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-green-500 mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <div class="w-8 h-8 shrink-0 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    </div>
                                     <div>
-                                        <h4 class="font-bold text-black text-sm">Headquarters</h4>
-                                        <p class="text-xs text-gray-600 leading-relaxed mt-1">Jl. Raya Jakarta-Bogor No.KM.39, RT.02/RW.02, Pabuaran, Kec. Cibinong, Kabupaten Bogor, Jawa Barat 16916</p>
+                                        <h4 class="font-extrabold text-white text-xs">Headquarters</h4>
+                                        <p class="text-[11px] text-gray-400 leading-relaxed mt-1 font-medium">Jl. Raya Jakarta-Bogor No.KM.39, RT.02/RW.02, Pabuaran, Kec. Cibinong, Bogor 16916</p>
                                     </div>
                                 </div>
                                 
                                 <!-- Phone -->
                                 <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                                    <p class="text-xs text-gray-600 font-medium">02122086938</p>
+                                    <div class="w-8 h-8 shrink-0 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                    </div>
+                                    <p class="text-xs text-gray-300 font-bold">02122086938</p>
                                 </div>
                                 
                                 <!-- Email -->
                                 <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                    <p class="text-xs text-gray-600 font-medium">info@boafutsal.com</p>
+                                    <div class="w-8 h-8 shrink-0 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    </div>
+                                    <p class="text-xs text-gray-300 font-bold">info@boafutsal.com</p>
                                 </div>
 
-                                <!-- Button -->
-                                <a href="https://www.google.com/maps/place/boa+futsal/data=!4m2!3m1!1s0x2e69ea687f799a95:0xc58db16e109db14a?sa=X&ved=1t:242&ictx=111" target="_blank" class="mt-2 w-full py-2.5 bg-green-500 text-black rounded-xl font-bold text-sm text-center block hover:bg-green-400 transition-colors shadow-lg">
-                                    Get Directions
+                                <a href="https://maps.google.com/?q=Boa+Futsal" target="_blank" class="block w-full py-2.5 mt-2 bg-green-500 hover:bg-green-400 text-black text-xs font-bold rounded-xl text-center transition-colors">
+                                    Get Directions &rarr;
                                 </a>
                             </div>
                         </div>
                     </div>
 
                     <!-- General Comment Form -->
-                    <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
-                        <h3 class="text-lg font-bold mb-5">Tinggalkan Komentar</h3>
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 shadow-2xl">
+                        <h3 class="text-2xl font-extrabold mb-6 text-white">Tinggalkan Komentar</h3>
                         @auth
-                        <form method="POST" action="{{ route('contact.store') }}" class="space-y-4">
+                        <form method="POST" action="{{ route('contact.store') }}" class="space-y-5">
                             @csrf
                             <input type="hidden" name="type" value="general">
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Nama</label>
                                 <input type="text" name="name" value="{{ old('name', Auth::user()->name) }}" required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="Nama kamu">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Email</label>
                                 <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="email@kamu.com">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Subjek</label>
                                 <input type="text" name="subject" value="{{ old('subject') }}" required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="Subjek komentar">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Komentar</label>
                                 <textarea name="message" rows="4" required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all resize-none"
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all resize-none font-medium"
                                     placeholder="Tulis komentarmu...">{{ old('message') }}</textarea>
                             </div>
                             <button type="submit"
-                                class="w-full py-4 bg-green-500 text-black rounded-2xl font-bold hover:bg-green-400 transition-all shadow-lg shadow-green-500/20">
+                                class="w-full py-4 mt-2 bg-gradient-to-r from-green-400 to-green-600 text-black rounded-xl font-extrabold hover:from-green-300 hover:to-green-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
                                 Kirim Komentar
                             </button>
                         </form>
                         @else
                         <div class="flex flex-col items-center justify-center h-full text-center py-10 gap-6">
-                            <div class="w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center justify-center">
-                                <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+                                <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-white font-bold text-lg mb-2">Login dulu untuk komentar</p>
-                                <p class="text-gray-500 text-sm">Kamu perlu login sebelum bisa meninggalkan komentar.</p>
+                                <p class="text-white font-extrabold text-xl mb-2">Login Dulu Yuk!</p>
+                                <p class="text-gray-400 text-sm font-medium">Kamu perlu login sebelum bisa meninggalkan komentar atau ulasan.</p>
                             </div>
-                            <a href="{{ route('login') }}" class="px-8 py-3 bg-green-500 text-black rounded-2xl font-bold hover:bg-green-400 transition-all">
+                            <a href="{{ route('login') }}" class="px-8 py-3.5 bg-green-500 text-black rounded-xl font-bold hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
                                 Login Sekarang
                             </a>
                         </div>
@@ -389,58 +361,58 @@
                 </div>
 
                 {{-- Public Comments --}}
-                <div class="mt-12">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-bold">Komentar Pengunjung</h3>
-                        <span id="comments-count" class="text-xs text-gray-500"></span>
+                <div class="mt-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-2xl font-extrabold text-white">Komentar <span class="text-green-400">Pengunjung</span></h3>
+                        <span id="comments-count" class="px-3 py-1 bg-white/10 rounded-full text-xs font-bold text-gray-300 border border-white/10"></span>
                     </div>
-                    <div class="bg-white/3 border border-white/10 rounded-[2rem] p-6">
-                        <div id="public-comments" class="space-y-4 overflow-y-auto pr-1" style="max-height: 420px;">
-                            <div class="text-gray-500 text-sm">Memuat komentar...</div>
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 shadow-2xl">
+                        <div id="public-comments" class="space-y-5 overflow-y-auto pr-2 custom-scrollbar" style="max-height: 460px;">
+                            <div class="text-gray-500 text-sm font-medium text-center py-8">Memuat komentar...</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{-- TAB: Collab & Sponsorship --}}
-            <div id="panel-collab" class="max-w-3xl mx-auto hidden">
-                <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8 md:p-10">
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold mb-2">Collab & <span class="text-green-400">Sponsorship</span></h3>
-                        <p class="text-gray-400 text-sm">Tertarik untuk berkolaborasi atau menjadi sponsor BOA Futsal? Isi form di bawah dan tim kami akan menghubungi kamu.</p>
+            <div id="panel-collab" class="max-w-4xl mx-auto hidden">
+                <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+                    <div class="mb-10 text-center">
+                        <h3 class="text-3xl font-extrabold mb-3 text-white">Collab & <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Sponsorship</span></h3>
+                        <p class="text-gray-400 text-sm max-w-lg mx-auto font-medium">Tertarik untuk berkolaborasi atau menjadi sponsor BOA Futsal? Isi form di bawah dan tim kami akan segera menghubungi kamu.</p>
                     </div>
                     @auth
-                    <form method="POST" action="{{ route('contact.store') }}" class="space-y-5">
+                    <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                         @csrf
                         <input type="hidden" name="type" value="collab">
-                        <div class="grid md:grid-cols-2 gap-5">
+                        <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Nama / Perusahaan</label>
                                 <input type="text" name="name" value="{{ old('name', Auth::user()->name) }}" required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="Nama atau perusahaan kamu">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Email</label>
                                 <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" required
-                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                                    class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="email@perusahaan.com">
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Jenis Kerjasama</label>
                             <input type="text" name="subject" value="{{ old('subject') }}" required
-                                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                                class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                 placeholder="Contoh: Sponsorship Jersey, Event Collab, dll">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Detail Proposal</label>
                             <textarea name="message" rows="6" required
-                                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all resize-none"
-                                placeholder="Ceritakan ide kolaborasi atau proposal sponsorship kamu...">{{ old('message') }}</textarea>
+                                class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all resize-none font-medium"
+                                placeholder="Ceritakan ide kolaborasi atau proposal sponsorship kamu secara detail...">{{ old('message') }}</textarea>
                         </div>
                         <button type="submit"
-                            class="w-full py-4 bg-green-500 text-black rounded-2xl font-black hover:bg-green-400 transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-2">
+                            class="w-full py-4 mt-4 bg-gradient-to-r from-green-400 to-green-600 text-black rounded-xl font-extrabold hover:from-green-300 hover:to-green-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2">
                             Kirim Proposal
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -448,17 +420,17 @@
                         </button>
                     </form>
                     @else
-                    <div class="flex flex-col items-center justify-center text-center py-10 gap-6">
-                        <div class="w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center justify-center">
-                            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex flex-col items-center justify-center text-center py-12 gap-6">
+                        <div class="w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+                            <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                             </svg>
                         </div>
                         <div>
-                            <p class="text-white font-bold text-lg mb-2">Login dulu untuk kirim proposal</p>
-                            <p class="text-gray-500 text-sm">Kamu perlu login sebelum bisa mengirim proposal collab.</p>
+                            <p class="text-white font-extrabold text-xl mb-2">Login Dulu Yuk!</p>
+                            <p class="text-gray-400 text-sm font-medium">Kamu perlu login sebelum bisa mengirim proposal kerjasama.</p>
                         </div>
-                        <a href="{{ route('login') }}" class="px-8 py-3 bg-green-500 text-black rounded-2xl font-bold hover:bg-green-400 transition-all">
+                        <a href="{{ route('login') }}" class="px-8 py-3.5 bg-green-500 text-black rounded-xl font-bold hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
                             Login Sekarang
                         </a>
                     </div>
@@ -591,20 +563,38 @@
             const weekdayPrices = field.prices.filter(p => p.day_type === 'weekday');
             const weekendPrices = field.prices.filter(p => p.day_type === 'weekend');
 
+            // Helper function for session names
+            const getSessionName = (timeString) => {
+                const hour = parseInt(timeString.substring(0, 2));
+                if (hour < 12) return 'Sesi Pagi';
+                if (hour < 15) return 'Sesi Siang';
+                if (hour < 18) return 'Sesi Sore';
+                return 'Sesi Malam';
+            };
+
             // Build price HTML
             let priceHTML = '';
 
             if (weekdayPrices.length > 0) {
                 priceHTML += `
-                    <div>
-                        <p class="text-green-400 font-bold text-sm uppercase tracking-widest mb-3 italic">Senin - Jumat</p>
-                        <div class="space-y-2">
+                    <div class="mb-5">
+                        <div class="flex items-center gap-2 mb-3">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <p class="text-green-400 font-extrabold text-sm uppercase tracking-widest">Senin - Jumat</p>
+                        </div>
+                        <div class="space-y-2.5">
                 `;
                 weekdayPrices.forEach(price => {
                     priceHTML += `
-                        <div class="flex justify-between p-3 bg-white/5 rounded-xl border border-white/5">
-                            <span class="text-gray-300">${price.start_time.substring(0,5)} - ${price.end_time.substring(0,5)}</span>
-                            <span class="font-bold">Rp ${parseInt(price.price_regular).toLocaleString('id-ID')}</span>
+                        <div class="flex items-center justify-between p-3.5 bg-black/40 rounded-xl border border-white/10 hover:border-green-500/50 hover:bg-green-500/5 transition-all group">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">${getSessionName(price.start_time)}</span>
+                                <span class="text-sm font-medium text-gray-200">${price.start_time.substring(0,5)} - ${price.end_time.substring(0,5)} WIB</span>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                                <span class="text-base font-extrabold text-white group-hover:text-green-400 transition-colors">Rp ${parseInt(price.price_regular).toLocaleString('id-ID')}</span>
+                                <span class="text-xs font-medium text-gray-500">/ Jam</span>
+                            </div>
                         </div>
                     `;
                 });
@@ -614,14 +604,23 @@
             if (weekendPrices.length > 0) {
                 priceHTML += `
                     <div>
-                        <p class="text-green-400 font-bold text-sm uppercase tracking-widest mb-3 italic">Sabtu - Minggu</p>
-                        <div class="space-y-2">
+                        <div class="flex items-center gap-2 mb-3">
+                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                            <p class="text-yellow-400 font-extrabold text-sm uppercase tracking-widest">Sabtu - Minggu</p>
+                        </div>
+                        <div class="space-y-2.5">
                 `;
                 weekendPrices.forEach(price => {
                     priceHTML += `
-                        <div class="flex justify-between p-3 bg-white/5 rounded-xl border border-white/5">
-                            <span class="text-gray-300">${price.start_time.substring(0,5)} - ${price.end_time.substring(0,5)}</span>
-                            <span class="font-bold">Rp ${parseInt(price.price_regular).toLocaleString('id-ID')}</span>
+                        <div class="flex items-center justify-between p-3.5 bg-black/40 rounded-xl border border-white/10 hover:border-yellow-500/50 hover:bg-yellow-500/5 transition-all group">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">${getSessionName(price.start_time)}</span>
+                                <span class="text-sm font-medium text-gray-200">${price.start_time.substring(0,5)} - ${price.end_time.substring(0,5)} WIB</span>
+                            </div>
+                            <div class="flex items-baseline gap-1.5">
+                                <span class="text-base font-extrabold text-white group-hover:text-yellow-400 transition-colors">Rp ${parseInt(price.price_regular).toLocaleString('id-ID')}</span>
+                                <span class="text-xs font-medium text-gray-500">/ Jam</span>
+                            </div>
                         </div>
                     `;
                 });
