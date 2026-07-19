@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - BOA Futsal</title>
+    <title>Join Member - BOA Futsal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -26,7 +26,7 @@
                         BOA<span class="text-white">FUTSAL</span>
                     </h1>
                 </a>
-                <p class="text-gray-400 mt-2">Buat akun baru</p>
+                <p class="text-gray-400 mt-2">Join Member</p>
             </div>
 
             <!-- Register Card -->
@@ -110,7 +110,7 @@
                         type="submit"
                         class="w-full px-6 py-3 bg-green-500 text-black rounded-xl font-bold text-base hover:bg-green-400 transition-all shadow-lg shadow-green-500/20"
                     >
-                        Daftar
+                        Join Member
                     </button>
 
                     <!-- Login Link -->

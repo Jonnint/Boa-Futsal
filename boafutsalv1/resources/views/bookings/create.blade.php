@@ -234,9 +234,8 @@
                                 
                                 <div class="mt-6 p-4 bg-black/40 border border-white/5 rounded-xl">
                                     <p class="text-sm text-gray-400 font-medium">
-                                        💡 <strong class="text-white">Ingin dapat diskon member?</strong> <br class="md:hidden">
-                                        <a href="{{ route('login') }}" class="text-green-400 hover:text-green-300 font-bold underline">Login</a> atau 
-                                        <a href="{{ route('register') }}" class="text-green-400 hover:text-green-300 font-bold underline">Daftar Akun</a> sekarang!
+                                        💡 <strong class="text-white">ingin diskon?</strong> 
+                                        <a href="{{ route('register') }}" class="text-green-400 hover:text-green-300 font-bold underline">join member</a>
                                     </p>
                                 </div>
                             </div>

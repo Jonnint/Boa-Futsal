@@ -42,6 +42,11 @@ Route::middleware('auth')->group(function () {
     
     // Booking routes - index requires auth to view user's bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    
+    // Payment member
+    Route::get('/payment/member', function () {
+        return view('payment.member');
+    })->name('payment.member');
 });
 
 // Public booking routes - anyone can create bookings
