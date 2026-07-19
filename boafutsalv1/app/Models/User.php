@@ -25,6 +25,8 @@ class User extends Authenticatable
         'phone',
         'password',
         'is_member',
+        'membership_tier',
+        'membership_expired_at',
         'role',
     ];
 
@@ -47,6 +49,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'membership_expired_at' => 'datetime',
             'password' => 'hashed',
             'is_member' => 'boolean',
         ];

@@ -24,6 +24,22 @@ Route::get('/dashboard', function () {
         return redirect('/admin/dashboard');
     }
     
+    // Check if user is member, if not redirect to payment
+    if (!$user->is_member) {
+        // Check if already has pending payment
+        $pendingPayment = \App\Models\MembershipPayment::where('user_id', $user->id_user)
+            ->where('status', 'pending')
+            ->first();
+            
+        if ($pendingPayment) {
+            return redirect()->route('payment.member.success', $pendingPayment->id)
+                ->with('info', 'Menunggu konfirmasi pembayaran dari admin');
+        }
+        
+        return redirect()->route('payment.member')
+            ->with('info', 'Silakan selesaikan pembayaran membership untuk akses dashboard');
+    }
+    
     $bookings = $user->bookings()->with(['field', 'payment'])->get();
     
     $stats = [
@@ -43,10 +59,18 @@ Route::middleware('auth')->group(function () {
     // Booking routes - index requires auth to view user's bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     
-    // Payment member
+    // Member payment
     Route::get('/payment/member', function () {
         return view('payment.member');
     })->name('payment.member');
+    Route::post('/payment/member/process', [\App\Http\Controllers\MemberPaymentController::class, 'store'])->name('payment.member.process');
+    Route::get('/payment/member/success/{id}', [\App\Http\Controllers\MemberPaymentController::class, 'success'])->name('payment.member.success');
+    
+    // Notifications
+    Route::get('/api/notifications', [\App\Http\Controllers\MemberNotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/api/notifications/unread-count', [\App\Http\Controllers\MemberNotificationController::class, 'unreadCount'])->name('notifications.unread');
+    Route::post('/api/notifications/{id}/read', [\App\Http\Controllers\MemberNotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/api/notifications/read-all', [\App\Http\Controllers\MemberNotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
 });
 
 // Public booking routes - anyone can create bookings
@@ -54,6 +78,9 @@ Route::get('/bookings/create/{field}', [BookingController::class, 'create'])->na
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
 Route::get('/api/field-schedule/{field}/{date}', [BookingController::class, 'getFieldSchedule'])->name('bookings.schedule');
+
+// Voucher validation (public API)
+Route::post('/api/voucher/validate', [\App\Http\Controllers\VoucherController::class, 'validate'])->name('voucher.validate');
 
 // Public API for field status (no auth required)
 Route::get('/api/field-status', [BookingController::class, 'getCurrentFieldStatus'])->name('field.status');
@@ -85,6 +112,32 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/messages', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'messages'])->name('admin.messages');
     Route::post('/messages/{id}/read', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'markRead'])->name('admin.messages.read');
     Route::delete('/messages/{id}', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'deleteMessage'])->name('admin.messages.delete');
+    
+    // Vouchers
+    Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class)->names([
+        'index' => 'admin.vouchers.index',
+        'create' => 'admin.vouchers.create',
+        'store' => 'admin.vouchers.store',
+        'edit' => 'admin.vouchers.edit',
+        'update' => 'admin.vouchers.update',
+        'destroy' => 'admin.vouchers.destroy',
+    ]);
+    Route::post('/vouchers/{voucher}/toggle', [\App\Http\Controllers\Admin\VoucherController::class, 'toggle'])->name('admin.vouchers.toggle');
+    
+    // Notifications
+    Route::resource('notifications', \App\Http\Controllers\Admin\NotificationController::class)->only(['index', 'create', 'store', 'destroy'])->names([
+        'index' => 'admin.notifications.index',
+        'create' => 'admin.notifications.create',
+        'store' => 'admin.notifications.store',
+        'destroy' => 'admin.notifications.destroy',
+    ]);
+    
+    // Membership payments
+    Route::get('/membership-payments', function() {
+        $payments = \App\Models\MembershipPayment::with('user')->orderBy('created_at', 'desc')->paginate(20);
+        return view('admin.membership-payments', compact('payments'));
+    })->name('admin.membership.payments');
+    Route::post('/membership-payments/{id}/approve', [\App\Http\Controllers\MemberPaymentController::class, 'approve'])->name('admin.membership.approve');
 });
 
 require __DIR__.'/auth.php';

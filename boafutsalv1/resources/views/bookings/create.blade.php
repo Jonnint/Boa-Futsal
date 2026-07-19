@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Booking {{ $field->name }} - BOA Futsal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        [x-cloak] { display: none !important; }
 
         /* Dark calendar picker */
         input[type="date"] {
@@ -327,6 +329,105 @@
                                         <p class="mt-2 text-xs font-bold text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
+                            </div>
+
+                            <!-- Voucher Code -->
+                            <div x-data="{ 
+                                voucherCode: '', 
+                                voucherApplied: false, 
+                                voucherData: null,
+                                originalPrice: 0,
+                                finalPrice: 0,
+                                isValidating: false,
+                                errorMsg: ''
+                            }">
+                                <label class="block text-sm font-bold mb-2">Kode Voucher (Opsional)</label>
+                                <div class="flex gap-2">
+                                    <input 
+                                        type="text" 
+                                        x-model="voucherCode"
+                                        :disabled="voucherApplied"
+                                        placeholder="Masukkan kode voucher"
+                                        class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 uppercase focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all text-sm md:text-base disabled:opacity-50"
+                                    >
+                                    <button 
+                                        type="button"
+                                        @click="validateVoucher()"
+                                        :disabled="!voucherCode || voucherApplied || isValidating"
+                                        class="px-6 py-3 bg-green-500 text-black rounded-xl font-bold hover:bg-green-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                                        x-text="voucherApplied ? '✓' : (isValidating ? '...' : 'Terapkan')"
+                                    ></button>
+                                </div>
+                                
+                                <input type="hidden" name="voucher_code" :value="voucherApplied ? voucherCode : ''">
+                                
+                                <!-- Success Message -->
+                                <div x-show="voucherApplied" x-cloak class="mt-3 p-3 bg-green-500/10 border border-green-500/20 rounded-xl">
+                                    <p class="text-sm text-green-400 font-bold">
+                                        ✓ Voucher berhasil diterapkan!
+                                    </p>
+                                    <p class="text-xs text-gray-400 mt-1" x-text="voucherData?.name"></p>
+                                    <button type="button" @click="removeVoucher()" class="text-xs text-red-400 hover:text-red-300 mt-2">Hapus voucher</button>
+                                </div>
+                                
+                                <!-- Error Message -->
+                                <div x-show="errorMsg" x-cloak class="mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                    <p class="text-sm text-red-400" x-text="errorMsg"></p>
+                                </div>
+
+                                <script>
+                                    function validateVoucher() {
+                                        const bookingDate = document.getElementById('booking_date').value;
+                                        const durationHours = document.getElementById('duration_hours').value;
+                                        
+                                        if (!bookingDate || !durationHours) {
+                                            this.errorMsg = 'Pilih tanggal dan durasi booking terlebih dahulu';
+                                            return;
+                                        }
+
+                                        // Calculate estimated price (rough calculation)
+                                        const estimatedPrice = durationHours * 100000; // Estimasi Rp100k per jam
+
+                                        this.isValidating = true;
+                                        this.errorMsg = '';
+
+                                        fetch('/api/voucher/validate', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+                                            },
+                                            body: JSON.stringify({
+                                                code: this.voucherCode.toUpperCase(),
+                                                booking_amount: estimatedPrice,
+                                                booking_date: bookingDate
+                                            })
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                this.voucherApplied = true;
+                                                this.voucherData = data.voucher;
+                                                this.errorMsg = '';
+                                            } else {
+                                                this.errorMsg = data.message || 'Voucher tidak valid';
+                                            }
+                                        })
+                                        .catch(err => {
+                                            this.errorMsg = 'Terjadi kesalahan saat validasi voucher';
+                                        })
+                                        .finally(() => {
+                                            this.isValidating = false;
+                                        });
+                                    }
+
+                                    function removeVoucher() {
+                                        this.voucherApplied = false;
+                                        this.voucherCode = '';
+                                        this.voucherData = null;
+                                        this.errorMsg = '';
+                                    }
+                                </script>
                             </div>
 
                             <!-- Notes -->

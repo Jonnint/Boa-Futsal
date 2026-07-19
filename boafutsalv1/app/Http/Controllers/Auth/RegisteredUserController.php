@@ -39,12 +39,14 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_member' => false, // Default bukan member
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
+        // Redirect ke payment member
         return redirect(route('payment.member', absolute: false));
     }
 }

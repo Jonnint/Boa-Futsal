@@ -24,6 +24,10 @@ class Booking extends Model
         'guest_email',
         'guest_phone',
         'booking_type',
+        'voucher_id',
+        'voucher_code',
+        'original_price',
+        'discount_amount',
     ];
 
     protected $casts = [
@@ -48,5 +52,10 @@ class Booking extends Model
     public function payment()
     {
         return $this->hasOne(Payment::class, 'booking_id', 'id_booking');
+    }
+
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class);
     }
 }

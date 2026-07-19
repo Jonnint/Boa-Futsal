@@ -29,6 +29,7 @@ class BookingController extends Controller
             'booking_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required',
             'duration_hours' => 'required|integer|min:1|max:8',
+            'voucher_code' => 'nullable|string',
         ];
         
         // Add guest information validation if user is not logged in
@@ -87,6 +88,22 @@ class BookingController extends Controller
         $isMember = $isLoggedIn && Auth::user()->is_member;
         $pricePerHour = $isMember ? $price->price_member : $price->price_regular;
         $totalPrice = $pricePerHour * $request->duration_hours;
+        $originalPrice = $totalPrice;
+        $discountAmount = 0;
+        $voucherId = null;
+        $voucherCode = null;
+
+        // Apply voucher if provided
+        if ($request->voucher_code) {
+            $voucher = \App\Models\Voucher::where('code', strtoupper($request->voucher_code))->first();
+            
+            if ($voucher && $voucher->canBeUsedBy($isLoggedIn ? Auth::id() : null, $totalPrice, $bookingDate)) {
+                $discountAmount = $voucher->calculateDiscount($totalPrice);
+                $totalPrice = $totalPrice - $discountAmount;
+                $voucherId = $voucher->id;
+                $voucherCode = $voucher->code;
+            }
+        }
 
         // Prepare booking data
         $bookingData = [
@@ -96,7 +113,11 @@ class BookingController extends Controller
             'end_time' => $endTime->format('H:i'),
             'duration_hours' => $request->duration_hours,
             'price_per_hour' => $pricePerHour,
+            'original_price' => $originalPrice,
+            'discount_amount' => $discountAmount,
             'total_price' => $totalPrice,
+            'voucher_id' => $voucherId,
+            'voucher_code' => $voucherCode,
             'is_member_price' => $isMember,
             'status' => 'pending',
             'notes' => $request->notes,
@@ -116,6 +137,17 @@ class BookingController extends Controller
         // Create booking
         $booking = Booking::create($bookingData);
 
+        // Record voucher usage if voucher was used
+        if ($voucherId) {
+            \App\Models\VoucherUsage::create([
+                'voucher_id' => $voucherId,
+                'user_id' => $isLoggedIn ? Auth::id() : null,
+                'booking_id' => $booking->id_booking,
+                'discount_amount' => $discountAmount,
+                'used_at' => now(),
+            ]);
+        }
+
         // Different flow for guest vs member
         if (!$isLoggedIn) {
             // Guest booking - redirect to WhatsApp for payment confirmation
@@ -127,8 +159,13 @@ class BookingController extends Controller
                 "Lapangan: {$field->name}\n" .
                 "Tanggal: " . \Carbon\Carbon::parse($booking->booking_date)->format('d F Y') . "\n" .
                 "Waktu: " . date('H:i', strtotime($booking->start_time)) . " - " . date('H:i', strtotime($booking->end_time)) . "\n" .
-                "Durasi: {$booking->duration_hours} jam\n" .
-                "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
+                "Durasi: {$booking->duration_hours} jam\n";
+            
+            if ($discountAmount > 0) {
+                $bookingDetails .= "Voucher: {$voucherCode} (-Rp " . number_format($discountAmount, 0, ',', '.') . ")\n";
+            }
+            
+            $bookingDetails .= "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n" .
                 "Booking ID: #{$booking->id_booking}";
             
             $whatsappUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($bookingDetails);

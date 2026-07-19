@@ -51,15 +51,11 @@
                     <div class="space-y-4">
                         <div class="bg-black/40 border border-white/5 rounded-xl p-4 flex justify-between items-center">
                             <span class="text-gray-400">Nama Lengkap</span>
-                            <span class="font-semibold text-white">John Doe</span>
+                            <span class="font-semibold text-white">{{ auth()->user()->name }}</span>
                         </div>
                         <div class="bg-black/40 border border-white/5 rounded-xl p-4 flex justify-between items-center">
                             <span class="text-gray-400">Email</span>
-                            <span class="font-semibold text-white">johndoe@example.com</span>
-                        </div>
-                        <div class="bg-black/40 border border-white/5 rounded-xl p-4 flex justify-between items-center">
-                            <span class="text-gray-400">No. HP / WhatsApp</span>
-                            <span class="font-semibold text-white">+62 812 3456 7890</span>
+                            <span class="font-semibold text-white">{{ auth()->user()->email }}</span>
                         </div>
                     </div>
                 </div>
@@ -73,11 +69,59 @@
                         Metode Pembayaran
                     </h2>
 
-                    <div class="space-y-3">
-                        <!-- BCA -->
-                        <div class="relative">
-                            <input type="radio" name="payment_method" id="bca" class="peer hidden radio-custom" checked>
-                            <label for="bca" class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all">
+                    <form action="{{ route('payment.member.process') }}" method="POST" id="paymentForm">
+                        @csrf
+                        
+                        <!-- Pilih Tier -->
+                        <div class="mb-6 p-6 bg-gradient-to-br from-green-500/10 to-green-600/5 border border-green-500/20 rounded-2xl">
+                            <h3 class="text-lg font-bold text-white mb-4">Pilih Paket Membership</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all has-[:checked]:border-green-500 has-[:checked]:bg-green-500/10">
+                                    <div>
+                                        <p class="font-bold text-white">Regular Member</p>
+                                        <p class="text-xs text-gray-400">Diskon 10% setiap booking</p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-lg font-bold text-green-400">Rp 150.000</span>
+                                        <input type="radio" name="membership_tier" value="regular" class="w-5 h-5" checked>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all has-[:checked]:border-green-500 has-[:checked]:bg-green-500/10">
+                                    <div>
+                                        <p class="font-bold text-white flex items-center gap-2">
+                                            VIP Member
+                                            <span class="px-2 py-0.5 bg-yellow-500 text-black text-xs rounded-full">HOT</span>
+                                        </p>
+                                        <p class="text-xs text-gray-400">Diskon 15% + Priority Booking</p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-lg font-bold text-green-400">Rp 250.000</span>
+                                        <input type="radio" name="membership_tier" value="vip" class="w-5 h-5">
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all has-[:checked]:border-green-500 has-[:checked]:bg-green-500/10">
+                                    <div>
+                                        <p class="font-bold text-white flex items-center gap-2">
+                                            VVIP Member
+                                            <span class="px-2 py-0.5 bg-purple-500 text-white text-xs rounded-full">PREMIUM</span>
+                                        </p>
+                                        <p class="text-xs text-gray-400">Diskon 20% + Free Drink + Locker</p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-lg font-bold text-green-400">Rp 500.000</span>
+                                        <input type="radio" name="membership_tier" value="vvip" class="w-5 h-5">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <!-- BCA -->
+                            <div class="relative">
+                                <input type="radio" name="payment_method" value="BCA" id="bca" class="peer hidden radio-custom" checked>
+                                <label for="bca" class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
                                         <span class="text-blue-700 font-black text-xs">BCA</span>
@@ -97,7 +141,7 @@
                         
                         <!-- Mandiri -->
                         <div class="relative">
-                            <input type="radio" name="payment_method" id="mandiri" class="peer hidden radio-custom">
+                            <input type="radio" name="payment_method" value="Mandiri" id="mandiri" class="peer hidden radio-custom">
                             <label for="mandiri" class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
@@ -118,7 +162,7 @@
 
                         <!-- GoPay -->
                         <div class="relative">
-                            <input type="radio" name="payment_method" id="gopay" class="peer hidden radio-custom">
+                            <input type="radio" name="payment_method" value="GoPay" id="gopay" class="peer hidden radio-custom">
                             <label for="gopay" class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
@@ -137,13 +181,24 @@
                             </label>
                         </div>
                     </div>
+                    </form>
                 </div>
 
             </div>
 
             <!-- Right Column: Summary -->
             <div class="lg:col-span-2">
-                <div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 glow-green sticky top-6">
+                <div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 glow-green sticky top-6" x-data="{
+                    tier: 'regular',
+                    prices: { regular: 150000, vip: 250000, vvip: 500000 },
+                    benefits: {
+                        regular: 'Diskon 10% / Booking',
+                        vip: 'Diskon 15% + Priority',
+                        vvip: 'Diskon 20% + Premium'
+                    },
+                    get price() { return this.prices[this.tier]; },
+                    get benefit() { return this.benefits[this.tier]; }
+                }" @change="tier = document.querySelector('input[name=membership_tier]:checked').value">
                     <h2 class="text-xl font-bold text-white mb-6">Ringkasan</h2>
                     
                     <div class="space-y-4 mb-6">
@@ -152,23 +207,27 @@
                             <span class="text-white font-medium">Join Member</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">Paket</span>
+                            <span class="text-white font-medium uppercase" x-text="tier"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-400">Masa Aktif</span>
                             <span class="text-white font-medium">1 Tahun</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-400">Benefit</span>
-                            <span class="text-green-400 font-medium">Diskon 10% / Booking</span>
+                            <span class="text-green-400 font-medium text-xs" x-text="benefit"></span>
                         </div>
                         <hr class="border-white/10">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-300 font-semibold">Total Tagihan</span>
-                            <span class="text-2xl font-extrabold text-green-400">Rp 150.000</span>
+                            <span class="text-2xl font-extrabold text-green-400" x-text="'Rp ' + price.toLocaleString('id-ID')"></span>
                         </div>
                     </div>
 
-                    <a href="{{ route('dashboard') }}" class="block w-full py-4 text-center bg-green-500 text-black rounded-xl font-bold text-lg hover:bg-green-400 transition-all shadow-lg shadow-green-500/20 mb-4">
+                    <button type="submit" form="paymentForm" class="block w-full py-4 text-center bg-green-500 text-black rounded-xl font-bold text-lg hover:bg-green-400 transition-all shadow-lg shadow-green-500/20 mb-4">
                         Bayar Sekarang
-                    </a>
+                    </button>
 
                     <p class="text-xs text-center text-gray-500">
                         Dengan menekan tombol di atas, Anda menyetujui <a href="#" class="text-green-400 hover:underline">Syarat & Ketentuan</a> kami.
