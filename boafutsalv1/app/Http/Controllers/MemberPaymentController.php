@@ -15,6 +15,7 @@ class MemberPaymentController extends Controller
         $request->validate([
             'payment_method' => 'required|in:BCA,Mandiri,GoPay',
             'membership_tier' => 'required|in:regular,vip,vvip',
+            'payment_proof' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = Auth::user();
@@ -27,12 +28,18 @@ class MemberPaymentController extends Controller
         
         $amount = $prices[$request->membership_tier];
         
+        $paymentProofPath = null;
+        if ($request->hasFile('payment_proof')) {
+            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+        }
+
         $payment = MembershipPayment::create([
             'user_id' => $user->id_user,
             'payment_method' => $request->payment_method,
             'membership_tier' => $request->membership_tier,
             'amount' => $amount,
             'status' => 'pending',
+            'payment_proof' => $paymentProofPath,
             'transaction_id' => 'TRX-' . time() . '-' . $user->id_user,
         ]);
 

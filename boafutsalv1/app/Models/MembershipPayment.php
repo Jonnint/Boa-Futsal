@@ -8,7 +8,7 @@ class MembershipPayment extends Model
 {
     protected $fillable = [
         'user_id', 'payment_method', 'membership_tier', 'amount', 
-        'status', 'payment_date', 'expired_at', 'transaction_id'
+        'status', 'payment_proof', 'payment_date', 'expired_at', 'transaction_id'
     ];
 
     protected $casts = [

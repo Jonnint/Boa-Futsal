@@ -66,18 +66,26 @@
                         {{ $payment->created_at->format('d M Y H:i') }}
                     </td>
                     <td class="py-4 px-4">
-                        @if($payment->status === 'pending')
-                            <form method="POST" action="{{ route('admin.membership.approve', $payment->id) }}" class="inline">
-                                @csrf
-                                <button type="submit" 
-                                    onclick="return confirm('Approve pembayaran ini dan aktifkan membership?')"
-                                    class="px-4 py-2 bg-green-500 text-black rounded-lg text-xs font-bold hover:bg-green-400 transition-all">
-                                    ✓ Approve
-                                </button>
-                            </form>
-                        @else
-                            <span class="text-xs text-gray-500">-</span>
-                        @endif
+                        <div class="flex items-center gap-2">
+                            @if($payment->payment_proof)
+                                <a href="{{ asset('storage/' . $payment->payment_proof) }}" target="_blank" class="px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-bold hover:bg-blue-500/30 transition-all flex items-center justify-center" title="Lihat Bukti">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </a>
+                            @endif
+
+                            @if($payment->status === 'pending')
+                                <form method="POST" action="{{ route('admin.membership.approve', $payment->id) }}" class="inline">
+                                    @csrf
+                                    <button type="submit" 
+                                        onclick="return confirm('Approve pembayaran ini dan aktifkan membership?')"
+                                        class="px-4 py-2 bg-green-500 text-black rounded-lg text-xs font-bold hover:bg-green-400 transition-all">
+                                        ✓ Approve
+                                    </button>
+                                </form>
+                            @elseif(!$payment->payment_proof)
+                                <span class="text-xs text-gray-500">-</span>
+                            @endif
+                        </div>
                     </td>
                 </tr>
                 @empty
@@ -128,17 +136,26 @@
                 </div>
             </div>
             
-            @if($payment->status === 'pending')
-                <div class="pt-2 border-t border-white/5 mt-1">
-                    <form method="POST" action="{{ route('admin.membership.approve', $payment->id) }}">
-                        @csrf
-                        <button type="submit" 
-                            onclick="return confirm('Approve pembayaran ini dan aktifkan membership?')"
-                            class="w-full py-3 bg-green-500 text-black rounded-lg text-sm font-extrabold hover:bg-green-400 transition-all text-center flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(74,222,128,0.2)]">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Approve Pembayaran
-                        </button>
-                    </form>
+            @if($payment->status === 'pending' || $payment->payment_proof)
+                <div class="pt-2 border-t border-white/5 mt-1 flex gap-2">
+                    @if($payment->payment_proof)
+                        <a href="{{ asset('storage/' . $payment->payment_proof) }}" target="_blank" class="flex-1 py-3 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg text-sm font-extrabold hover:bg-blue-500/30 transition-all text-center flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            Lihat Bukti
+                        </a>
+                    @endif
+
+                    @if($payment->status === 'pending')
+                        <form method="POST" action="{{ route('admin.membership.approve', $payment->id) }}" class="flex-1">
+                            @csrf
+                            <button type="submit" 
+                                onclick="return confirm('Approve pembayaran ini dan aktifkan membership?')"
+                                class="w-full py-3 bg-green-500 text-black rounded-lg text-sm font-extrabold hover:bg-green-400 transition-all text-center flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(74,222,128,0.2)]">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Approve
+                            </button>
+                        </form>
+                    @endif
                 </div>
             @endif
         </div>
