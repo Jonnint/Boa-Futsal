@@ -59,6 +59,19 @@ Route::middleware('auth')->group(function () {
     // Booking routes - index requires auth to view user's bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     
+    // User sidebar routes
+    Route::get('/user/membership', function () {
+        return view('user.membership');
+    })->name('user.membership');
+
+    Route::get('/user/diskon', function () {
+        return view('user.diskon');
+    })->name('user.diskon');
+
+    Route::get('/user/voucher', function () {
+        return view('user.voucher');
+    })->name('user.voucher');
+    
     // Member payment
     Route::get('/payment/member', function () {
         return view('payment.member');

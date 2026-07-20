@@ -22,7 +22,8 @@ class NotificationController extends Controller
     public function create()
     {
         $vouchers = Voucher::where('is_active', true)->get();
-        return view('admin.notifications.create', compact('vouchers'));
+        $users = User::where('role', 'user')->orderBy('name')->get();
+        return view('admin.notifications.create', compact('vouchers', 'users'));
     }
 
     public function store(Request $request)

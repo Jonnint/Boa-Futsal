@@ -5,18 +5,18 @@
 @section('content')
     <!-- Header -->
     <div class="relative overflow-hidden rounded-3xl p-8 md:p-10 bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl mb-8 group">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tighter mb-2 text-white">
-                    Kelola <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Voucher</span>
+                    Kelola <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Voucher</span>
                 </h1>
                 <p class="text-gray-400 text-sm lg:text-base font-medium">
                     Buat dan kelola voucher diskon untuk customer BOA Futsal
                 </p>
             </div>
             <a href="{{ route('admin.vouchers.create') }}"
-               class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-purple-500/30 hover:-translate-y-0.5 shrink-0">
+               class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-green-500/30 hover:-translate-y-0.5 shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Buat Voucher Baru
             </a>
@@ -44,9 +44,9 @@
             $activeVouchers  = $vouchers->getCollection()->where('is_active', true)->count();
             $totalUsages     = $vouchers->getCollection()->sum('usages_count');
         @endphp
-        <div class="group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 p-5 hover:-translate-y-1 hover:border-purple-500/30 transition-all duration-300">
-            <div class="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-500/20 transition-colors">
-                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+        <div class="group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 p-5 hover:-translate-y-1 hover:border-green-500/30 transition-all duration-300">
+            <div class="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-500/20 transition-colors">
+                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
             </div>
             <p class="text-2xl font-extrabold text-white">{{ $totalVouchers }}</p>
             <p class="text-xs text-gray-400 font-medium mt-0.5">Total Voucher</p>
@@ -86,7 +86,7 @@
                 <svg class="w-16 h-16 mb-4 text-gray-600/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                 <p class="font-bold text-lg text-gray-400 mb-2">Belum ada voucher</p>
                 <p class="text-sm text-gray-500 mb-6">Mulai buat voucher pertama kamu!</p>
-                <a href="{{ route('admin.vouchers.create') }}" class="px-6 py-3 bg-purple-500/20 border border-purple-500/30 text-purple-400 font-bold rounded-xl hover:bg-purple-500/30 transition-all">
+                <a href="{{ route('admin.vouchers.create') }}" class="px-6 py-3 bg-green-500/20 border border-green-500/30 text-green-400 font-bold rounded-xl hover:bg-green-500/30 transition-all">
                     Buat Voucher
                 </a>
             </div>
@@ -109,11 +109,11 @@
                             <!-- Voucher Info -->
                             <td class="py-4 px-6 whitespace-nowrap">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/20 flex items-center justify-center shrink-0">
-                                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/20 flex items-center justify-center shrink-0">
+                                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                                     </div>
                                     <div>
-                                        <div class="font-extrabold text-sm text-white tracking-wider font-mono group-hover:text-purple-400 transition-colors">{{ $voucher->code }}</div>
+                                        <div class="font-extrabold text-sm text-white tracking-wider font-mono group-hover:text-green-400 transition-colors">{{ $voucher->code }}</div>
                                         <div class="text-xs text-gray-400 mt-0.5 max-w-[160px] truncate">{{ $voucher->name }}</div>
                                         @if($voucher->is_member_only)
                                             <span class="mt-1 inline-flex items-center px-1.5 py-0.5 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-[9px] font-extrabold rounded uppercase tracking-wider">Member Only</span>
@@ -164,7 +164,7 @@
                                         @php
                                             $usagePercent = $voucher->usage_limit ? min(100, ($voucher->usages_count / $voucher->usage_limit) * 100) : 0;
                                         @endphp
-                                        <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all"
+                                        <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all"
                                              style="width: {{ $usagePercent }}%"></div>
                                     </div>
                                 </div>
@@ -257,7 +257,7 @@
 
                         @foreach($vouchers->getUrlRange(1, $vouchers->lastPage()) as $page => $url)
                             @if($page == $vouchers->currentPage())
-                                <span class="px-3 py-2 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-400 font-bold text-sm">{{ $page }}</span>
+                                <span class="px-3 py-2 rounded-lg bg-green-500/20 border border-green-500/40 text-green-400 font-bold text-sm">{{ $page }}</span>
                             @else
                                 <a href="{{ $url }}" class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-white/20 text-sm transition-all">{{ $page }}</a>
                             @endif

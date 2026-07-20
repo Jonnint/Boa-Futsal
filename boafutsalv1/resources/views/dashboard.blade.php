@@ -1,25 +1,8 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BOA Futsal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glow-green { box-shadow: 0 0 20px rgba(74, 222, 128, 0.2); }
-    </style>
-</head>
-<body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black">
+@extends('layouts.user')
 
-    <x-public-navbar simple="true" backUrl="/" backText="Homepage" />
+@section('title', 'Dashboard')
 
-
-
-    <!-- Main Content -->
-    <div class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
-        <div class="container mx-auto max-w-7xl">
+@section('content')
             <!-- Welcome Banner -->
             <div class="relative overflow-hidden rounded-2xl md:rounded-[2rem] p-6 md:p-12 bg-gradient-to-br from-green-500/10 via-green-600/5 to-transparent border border-green-500/20 mb-6 md:mb-8">
                 <div class="absolute top-0 -left-20 w-96 h-96 bg-green-600/10 rounded-full blur-[120px]"></div>
@@ -163,8 +146,4 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </div>
-
-</body>
-</html>
+@endsection
