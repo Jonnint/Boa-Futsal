@@ -69,7 +69,7 @@
                         Metode Pembayaran
                     </h2>
 
-                    <form action="{{ route('payment.member.process') }}" method="POST" id="paymentForm">
+                    <form action="{{ route('payment.member.process') }}" method="POST" id="paymentForm" enctype="multipart/form-data">
                         @csrf
                         
                         <!-- Pilih Tier -->
@@ -128,7 +128,7 @@
                                     </div>
                                     <div>
                                         <p class="font-semibold text-white">BCA Virtual Account</p>
-                                        <p class="text-xs text-gray-400">Dicek otomatis</p>
+                                        <p class="text-xs text-gray-400">No. Rek: <span class="font-mono text-green-400 font-bold">092819281</span></p>
                                     </div>
                                 </div>
                                 <div class="check-icon opacity-0 w-6 h-6 rounded-full bg-green-500 text-black flex items-center justify-center transition-opacity">
@@ -149,7 +149,7 @@
                                     </div>
                                     <div>
                                         <p class="font-semibold text-white">Mandiri Virtual Account</p>
-                                        <p class="text-xs text-gray-400">Dicek otomatis</p>
+                                        <p class="text-xs text-gray-400">No. Rek: <span class="font-mono text-green-400 font-bold">0239129310</span></p>
                                     </div>
                                 </div>
                                 <div class="check-icon opacity-0 w-6 h-6 rounded-full bg-green-500 text-black flex items-center justify-center transition-opacity">
@@ -168,9 +168,27 @@
                                     <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
                                         <span class="text-blue-500 font-bold text-xs">gopay</span>
                                     </div>
-                                    <div>
+                                    <div class="w-full">
                                         <p class="font-semibold text-white">GoPay / QRIS</p>
-                                        <p class="text-xs text-gray-400">Dicek otomatis</p>
+                                        <p class="text-xs text-gray-400 mt-1">Scan QRIS di bawah ini:</p>
+                                        <div class="flex items-start gap-4 mt-3">
+                                            <a href="{{ asset('asset/img/qris.png') }}" target="_blank" title="Klik untuk memperbesar" class="block relative group">
+                                                <img src="{{ asset('asset/img/qris.png') }}" alt="QRIS" class="w-24 rounded-xl bg-white p-2 group-hover:opacity-80 transition-opacity">
+                                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                    <div class="bg-black/60 p-1.5 rounded-full text-white">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l3.293 3.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-3.293 3.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l3.293-3.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-3.293-3.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="{{ asset('asset/img/qris.png') }}" download="QRIS_BOA_Futsal.png" class="px-3 py-1.5 bg-white/5 border border-white/10 hover:bg-green-500/10 hover:border-green-500/50 hover:text-green-400 rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                                Download QR
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="check-icon opacity-0 w-6 h-6 rounded-full bg-green-500 text-black flex items-center justify-center transition-opacity">
@@ -225,9 +243,21 @@
                         </div>
                     </div>
 
-                    <button type="submit" form="paymentForm" class="block w-full py-4 text-center bg-green-500 text-black rounded-xl font-bold text-lg hover:bg-green-400 transition-all shadow-lg shadow-green-500/20 mb-4">
-                        Bayar Sekarang
-                    </button>
+                    <div class="flex flex-col gap-3 mb-4">
+                        <button type="submit" form="paymentForm" class="w-full py-4 text-center bg-green-500 text-black rounded-xl font-bold text-lg hover:bg-green-400 transition-all shadow-lg shadow-green-500/20">
+                            Bayar Sekarang
+                        </button>
+                        
+                        <div class="relative">
+                            <input type="file" name="payment_proof" id="payment_proof" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" form="paymentForm" accept="image/*">
+                            <div class="w-full py-3.5 text-center bg-transparent border-2 border-green-500/50 text-green-400 rounded-xl font-bold hover:bg-green-500/10 transition-all flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                Upload Bukti Pembayaran
+                            </div>
+                        </div>
+                    </div>
 
                     <p class="text-xs text-center text-gray-500">
                         Dengan menekan tombol di atas, Anda menyetujui <a href="#" class="text-green-400 hover:underline">Syarat & Ketentuan</a> kami.
