@@ -710,90 +710,126 @@
             } else {
                 navbar.classList.remove('glass', 'py-4');
                 navbar.classList.add('py-6');
-            }
+}
         });
     </script>
 
     <!-- Footer -->
-    <footer class="relative pt-24 pb-10 bg-[#050505] overflow-hidden border-t border-white/5 mt-10">
-        <!-- Glow Effect -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
-        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-48 bg-green-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <footer class="relative pt-32 pb-16 overflow-hidden mt-10">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="{{ asset('asset/img/landing.jfif') }}" alt="Footer Background" class="w-full h-full object-cover object-center opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/80 to-[#050505]"></div>
+        </div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12 lg:mb-16">
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            <!-- Glassmorphism Card -->
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl md:rounded-[2.5rem] p-6 md:p-12 shadow-2xl">
                 
-                <!-- Brand & About -->
-                <div class="lg:col-span-4 lg:pr-4 text-center md:text-left">
-                    <div class="text-3xl font-extrabold tracking-tighter text-green-400 mb-5">
-                        BOA<span class="text-white">FUTSAL</span>
-                    </div>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6 md:mb-8">
-                        Arena futsal premium di Bogor dengan fasilitas lengkap, rumput sintetis berstandar tinggi, dan sistem reservasi digital yang super cepat.
-                    </p>
-                    <div class="flex items-center justify-center md:justify-start gap-3">
-                        <!-- Social Icons -->
-                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:text-black hover:border-green-500 hover:bg-green-500 transition-all duration-300">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                <!-- Main Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-8 mb-10 md:mb-12">
+                    
+                    <!-- Column 1: Brand -->
+                    <div class="lg:pr-4">
+                        <a href="#home" class="text-3xl font-extrabold tracking-tighter text-green-400 block mb-5">
+                            BOA<span class="text-white">FUTSAL</span>
                         </a>
-                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:text-black hover:border-green-500 hover:bg-green-500 transition-all duration-300">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.46 2.89 2.89 0 012.9-4.22c.1 0 .21.01.31.02v-3.26c-.1-.01-.2-.02-.31-.02a6.35 6.35 0 00-6.35 6.35c0 3.51 2.84 6.35 6.35 6.35a6.35 6.35 0 006.35-6.35V8.59a8.4 8.4 0 004.18 1.13V6.26c-1.46 0-2.81-.56-3.8-1.5z"/></svg>
-                        </a>
-                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:text-black hover:border-green-500 hover:bg-green-500 transition-all duration-300">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.558 0 11.894-5.335 11.897-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-8">
+                            Kami membantu tim Anda merasakan pengalaman bermain di arena futsal premium dengan fasilitas berstandar tinggi.
+                        </p>
+                        <a href="#fields" class="inline-flex items-center gap-2 text-green-400 font-bold hover:text-white transition-colors group">
+                            Booking Lapangan 
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </a>
                     </div>
+
+                    <!-- Column 2: Navigasi -->
+                    <div>
+                        <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-xs">Navigasi</h4>
+                        <ul class="space-y-4">
+                            <li><a href="#home" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Home</a></li>
+                            <li><a href="#facilities" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Fasilitas</a></li>
+                            <li><a href="#fields" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Lapangan</a></li>
+                            <li><a href="#contact" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Hubungi Kami</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 3: Jam Operasional -->
+                    <div>
+                        <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-xs">Jam Operasional</h4>
+                        <ul class="space-y-4">
+                            <li>
+                                <p class="text-sm font-medium text-gray-400 mb-1">Senin - Jumat</p>
+                                <p class="text-sm font-bold text-white">08:00 - 23:00</p>
+                            </li>
+                            <li>
+                                <p class="text-sm font-medium text-gray-400 mb-1">Sabtu - Minggu</p>
+                                <p class="text-sm font-bold text-white">07:00 - 24:00</p>
+                            </li>
+                            <li>
+                                <p class="text-sm font-medium text-gray-400 mb-1">Hari Libur</p>
+                                <p class="text-sm font-bold text-green-400">Tetap Buka</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 4: Contact -->
+                    <div>
+                        <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-xs">Contact</h4>
+                        <ul class="space-y-5">
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-300">info@boafutsal.com</span>
+                            </li>
+                            <li class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-300">021 2208 6938</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                </div>
+                                <span class="text-sm text-gray-300 leading-relaxed">Bogor, Indonesia</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- Links -->
-                <div class="lg:col-span-2 text-center md:text-left">
-                    <h4 class="text-white font-bold mb-5 md:mb-6 tracking-wide uppercase text-xs">Navigasi</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#home" class="text-sm font-medium text-gray-400 hover:text-green-400 hover:translate-x-1 transition-transform inline-block">Home</a></li>
-                        <li><a href="#facilities" class="text-sm font-medium text-gray-400 hover:text-green-400 hover:translate-x-1 transition-transform inline-block">Fasilitas</a></li>
-                        <li><a href="#fields" class="text-sm font-medium text-gray-400 hover:text-green-400 hover:translate-x-1 transition-transform inline-block">Lapangan</a></li>
-                        <li><a href="#contact" class="text-sm font-medium text-gray-400 hover:text-green-400 hover:translate-x-1 transition-transform inline-block">Contact Us</a></li>
-                    </ul>
+                <!-- Bottom Bar inside Card -->
+                <div class="pt-8 border-t border-white/10 flex flex-col lg:flex-row items-center justify-between gap-6">
+                    
+                    <!-- Tags/Services -->
+                    <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3 text-xs text-gray-400 font-medium">
+                        <span>Lapangan Sintetis</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        <span>Lapangan Vinyl</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        <span>Membership</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        <span>Turnamen</span>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-black hover:bg-green-500 hover:border-green-500 transition-all duration-300">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-black hover:bg-green-500 hover:border-green-500 transition-all duration-300">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.46 2.89 2.89 0 012.9-4.22c.1 0 .21.01.31.02v-3.26c-.1-.01-.2-.02-.31-.02a6.35 6.35 0 00-6.35 6.35c0 3.51 2.84 6.35 6.35 6.35a6.35 6.35 0 006.35-6.35V8.59a8.4 8.4 0 004.18 1.13V6.26c-1.46 0-2.81-.56-3.8-1.5z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-black hover:bg-green-500 hover:border-green-500 transition-all duration-300">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.634 1.437h.005c6.558 0 11.894-5.335 11.897-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Operational Hours -->
-                <div class="lg:col-span-3">
-                    <h4 class="text-white font-bold mb-5 md:mb-6 tracking-wide uppercase text-xs text-center md:text-left">Jam Operasional</h4>
-                    <ul class="space-y-4">
-                        <li class="flex items-center justify-between text-sm border-b border-white/5 pb-2">
-                            <span class="text-gray-400">Senin - Jumat</span>
-                            <span class="text-white font-bold">08:00 - 23:00</span>
-                        </li>
-                        <li class="flex items-center justify-between text-sm border-b border-white/5 pb-2">
-                            <span class="text-gray-400">Sabtu - Minggu</span>
-                            <span class="text-white font-bold">07:00 - 24:00</span>
-                        </li>
-                        <li class="flex items-center justify-between text-sm">
-                            <span class="text-gray-400">Hari Libur</span>
-                            <span class="text-green-400 font-bold bg-green-500/10 px-3 py-1 rounded-full text-xs border border-green-500/20">Tetap Buka</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- CTA -->
-                <div class="lg:col-span-3 text-center md:text-left">
-                    <h4 class="text-white font-bold mb-5 md:mb-6 tracking-wide uppercase text-xs">Siap Main?</h4>
-                    <p class="text-gray-400 text-sm mb-5 leading-relaxed">Jangan sampai kehabisan jadwal! Booking lapangan favorit timmu sekarang juga.</p>
-                    <a href="#fields" class="w-full py-3.5 bg-green-500 hover:bg-green-400 text-black rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(34,197,94,0.2)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:-translate-y-1 flex items-center justify-center gap-2 group">
-                        Booking Sekarang
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </a>
-                </div>
-
-            </div>
-
-            <!-- Copyright -->
-            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-                <p class="text-gray-500 text-sm font-medium text-center md:text-left">© 2026 BOA Futsal. All rights reserved.</p>
-                <div class="flex items-center justify-center gap-6 text-sm font-medium text-gray-500">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <!-- Copyright -->
+                <div class="mt-8 text-center lg:text-left text-gray-500 text-xs font-medium">
+                    © 2026 BOA Futsal. All Rights Reserved.
                 </div>
             </div>
         </div>
