@@ -127,18 +127,20 @@ class ChatbotController extends Controller
             return response()->json(['status' => 'error', 'reason' => 'API Token not configured'], 200);
         }
 
-        // Send reply via Fonnte API
-        $response = Http::withoutVerifying()->withHeaders([
-            'Authorization' => $fonnteToken,
-        ])->post('https://api.fonnte.com/send', [
-            'target' => $sender,
-            'message' => $replyMessage,
-        ]);
+        // Send reply via Fonnte API as a background task to prevent webhook deadlock
+        defer(function () use ($fonnteToken, $sender, $replyMessage) {
+            $response = Http::withoutVerifying()->withHeaders([
+                'Authorization' => $fonnteToken,
+            ])->post('https://api.fonnte.com/send', [
+                'target' => $sender,
+                'message' => $replyMessage,
+            ]);
 
-        Log::info('Fonnte Send API Response: ', [
-            'status' => $response->status(),
-            'body' => $response->body()
-        ]);
+            Log::info('Fonnte Send API Response (Deferred): ', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+        });
 
         return response()->json([
             'status' => 'success',
