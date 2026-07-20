@@ -141,7 +141,7 @@
                         
                         <!-- Mandiri -->
                         <div class="relative">
-                            <input type="radio" name="payment_method" value="Mandiri" id="mandiri" class="peer hidden radio-custom">
+                            <input type="rad io" name="payment_method" value="Mandiri" id="mandiri" class="peer hidden radio-custom">
                             <label for="mandiri" class="flex items-center justify-between p-4 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-green-400/50 transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-8 bg-white rounded flex items-center justify-center p-1">
@@ -248,13 +248,16 @@
                             Bayar Sekarang
                         </button>
                         
-                        <div class="relative">
-                            <input type="file" name="payment_proof" id="payment_proof" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" form="paymentForm" accept="image/*">
-                            <div class="w-full py-3.5 text-center bg-transparent border-2 border-green-500/50 text-green-400 rounded-xl font-bold hover:bg-green-500/10 transition-all flex items-center justify-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                </svg>
-                                Upload Bukti Pembayaran
+                        <div class="relative group">
+                            <input type="file" name="payment_proof" id="payment_proof" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" form="paymentForm" accept="image/*" onchange="handleFileUpload(event)">
+                            <div id="upload-btn" class="w-full py-3.5 px-4 text-center bg-transparent border-2 border-green-500/50 text-green-400 rounded-xl font-bold group-hover:bg-green-500/10 transition-all flex flex-col items-center justify-center gap-2 overflow-hidden relative">
+                                <div class="flex items-center justify-center gap-2 pointer-events-none relative z-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span id="upload-text" class="truncate max-w-[200px]">Upload Bukti Pembayaran</span>
+                                </div>
+                                <img id="upload-preview" src="" alt="Preview" class="hidden mt-2 rounded-lg max-h-40 w-full object-contain pointer-events-none">
                             </div>
                         </div>
                     </div>
@@ -268,5 +271,31 @@
         </div>
     </div>
 
+    <script>
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            const btn = document.getElementById('upload-btn');
+            const text = document.getElementById('upload-text');
+            const preview = document.getElementById('upload-preview');
+
+            if (file) {
+                text.textContent = file.name;
+                btn.classList.add('bg-green-500/10', 'border-green-400', 'text-green-300');
+                btn.classList.remove('bg-transparent', 'border-green-500/50');
+                
+                // Set and show preview
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden');
+            } else {
+                text.textContent = 'Upload Bukti Pembayaran';
+                btn.classList.remove('bg-green-500/10', 'border-green-400', 'text-green-300');
+                btn.classList.add('bg-transparent', 'border-green-500/50');
+                
+                // Hide preview
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
+        }
+    </script>
 </body>
 </html>
