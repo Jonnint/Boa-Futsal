@@ -95,6 +95,9 @@ Route::get('/api/field-schedule/{field}/{date}', [BookingController::class, 'get
 // Voucher validation (public API)
 Route::post('/api/voucher/validate', [\App\Http\Controllers\VoucherController::class, 'validate'])->name('voucher.validate');
 
+// Fonnte Webhook API
+Route::post('/webhook/fonnte', [\App\Http\Controllers\Admin\ChatbotController::class, 'handleWebhook'])->name('webhook.fonnte');
+
 // Public API for field status (no auth required)
 Route::get('/api/field-status', [BookingController::class, 'getCurrentFieldStatus'])->name('field.status');
 
@@ -151,6 +154,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         return view('admin.membership-payments', compact('payments'));
     })->name('admin.membership.payments');
     Route::post('/membership-payments/{id}/approve', [\App\Http\Controllers\MemberPaymentController::class, 'approve'])->name('admin.membership.approve');
+    Route::post('/membership-payments/{id}/reject', [\App\Http\Controllers\MemberPaymentController::class, 'reject'])->name('admin.membership.reject');
+
+    // Chatbot settings management
+    Route::get('/chatbot', [\App\Http\Controllers\Admin\ChatbotController::class, 'index'])->name('admin.chatbot');
+    Route::post('/chatbot/update', [\App\Http\Controllers\Admin\ChatbotController::class, 'update'])->name('admin.chatbot.update');
 });
 
 require __DIR__.'/auth.php';

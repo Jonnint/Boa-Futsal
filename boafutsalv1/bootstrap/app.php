@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'no-cache' => \App\Http\Middleware\NoCacheMiddleware::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'webhook/fonnte',
+        ]);
+
         // Apply no-cache to all authenticated routes
         $middleware->appendToGroup('web', \App\Http\Middleware\NoCacheMiddleware::class);
     })

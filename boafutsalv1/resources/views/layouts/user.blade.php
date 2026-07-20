@@ -98,6 +98,9 @@
     <!-- Overlay for mobile sidebar -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-30 hidden lg:hidden"></div>
 
+    <!-- Notification Bell -->
+    <x-notification-bell />
+
     <!-- Main Content -->
     <main class="flex-1 lg:ml-72 flex flex-col min-h-screen">
         <div class="flex-1 pt-24 lg:pt-8 pb-12 px-4 md:px-8">

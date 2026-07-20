@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             FieldSeeder::class,
             AdminSeeder::class,
+            ChatbotSettingSeeder::class,
         ]);
     }
 }

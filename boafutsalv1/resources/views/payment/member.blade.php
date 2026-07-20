@@ -20,6 +20,9 @@
 </head>
 <body class="bg-[#050505] text-white selection:bg-green-500 selection:text-black min-h-screen relative pb-12">
 
+    <!-- Notification Bell -->
+    <x-notification-bell />
+
     <!-- Background Effects -->
     <div class="fixed top-0 -left-20 w-96 h-96 bg-green-600/10 rounded-full blur-[120px] pointer-events-none"></div>
     <div class="fixed bottom-0 -right-20 w-96 h-96 bg-green-900/10 rounded-full blur-[120px] pointer-events-none"></div>

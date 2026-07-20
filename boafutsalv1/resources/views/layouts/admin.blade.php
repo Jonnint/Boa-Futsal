@@ -90,6 +90,11 @@
                         <span class="ml-auto px-2 py-0.5 bg-yellow-500 text-black text-xs font-extrabold rounded-full">{{ $pending }}</span>
                     @endif
                 </a>
+
+                <a href="/admin/chatbot" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->is('admin/chatbot*') ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    <span class="font-bold text-sm">Kelola Chatbot</span>
+                </a>
             </div>
 
             <div class="pt-6 pb-2">

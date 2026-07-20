@@ -58,8 +58,10 @@
                             <span class="px-3 py-1 bg-yellow-500/10 text-yellow-400 rounded-full text-xs font-bold">Pending</span>
                         @elseif($payment->status === 'paid')
                             <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-xs font-bold">Paid</span>
+                        @elseif($payment->status === 'rejected')
+                            <span class="px-3 py-1 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">Rejected</span>
                         @else
-                            <span class="px-3 py-1 bg-red-500/10 text-red-400 rounded-full text-xs font-bold">Expired</span>
+                            <span class="px-3 py-1 bg-gray-500/10 text-gray-400 rounded-full text-xs font-bold">Expired</span>
                         @endif
                     </td>
                     <td class="py-4 px-4 text-sm text-gray-400">
@@ -80,6 +82,14 @@
                                         onclick="return confirm('Approve pembayaran ini dan aktifkan membership?')"
                                         class="px-4 py-2 bg-green-500 text-black rounded-lg text-xs font-bold hover:bg-green-400 transition-all">
                                         ✓ Approve
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('admin.membership.reject', $payment->id) }}" class="inline reject-form">
+                                    @csrf
+                                    <input type="hidden" name="reason" value="">
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold hover:bg-red-500 hover:text-white transition-all">
+                                        ✕ Reject
                                     </button>
                                 </form>
                             @elseif(!$payment->payment_proof)
@@ -111,8 +121,10 @@
                         <span class="px-2 py-1 bg-yellow-500/10 text-yellow-400 rounded text-[10px] font-bold uppercase tracking-wider">Pending</span>
                     @elseif($payment->status === 'paid')
                         <span class="px-2 py-1 bg-green-500/10 text-green-400 rounded text-[10px] font-bold uppercase tracking-wider">Paid</span>
+                    @elseif($payment->status === 'rejected')
+                        <span class="px-2 py-1 bg-red-500/10 text-red-400 rounded text-[10px] font-bold uppercase tracking-wider">Rejected</span>
                     @else
-                        <span class="px-2 py-1 bg-red-500/10 text-red-400 rounded text-[10px] font-bold uppercase tracking-wider">Expired</span>
+                        <span class="px-2 py-1 bg-gray-500/10 text-gray-400 rounded text-[10px] font-bold uppercase tracking-wider">Expired</span>
                     @endif
                 </div>
             </div>
@@ -155,6 +167,15 @@
                                 Approve
                             </button>
                         </form>
+                        <form method="POST" action="{{ route('admin.membership.reject', $payment->id) }}" class="flex-1 reject-form">
+                            @csrf
+                            <input type="hidden" name="reason" value="">
+                            <button type="submit"
+                                class="w-full py-3 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-extrabold hover:bg-red-500 hover:text-white transition-all text-center flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                Reject
+                            </button>
+                        </form>
                     @endif
                 </div>
             @endif
@@ -170,4 +191,21 @@
         {{ $payments->links() }}
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.reject-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const reason = prompt(
+                'Alasan penolakan pembayaran (akan dikirim sebagai notifikasi ke user):',
+                'Bukti pembayaran tidak valid atau tidak sesuai. Silakan upload ulang bukti pembayaran yang benar.'
+            );
+            if (reason === null) {
+                return;
+            }
+            form.querySelector('input[name="reason"]').value = reason;
+            form.submit();
+        });
+    });
+</script>
 @endsection

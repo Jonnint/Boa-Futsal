@@ -11,6 +11,9 @@
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen flex items-center justify-center px-6">
+    <!-- Notification Bell -->
+    <x-notification-bell />
+
     <div class="max-w-lg w-full text-center">
         <div class="bg-white/5 border border-white/10 rounded-3xl p-8">
             <div class="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
