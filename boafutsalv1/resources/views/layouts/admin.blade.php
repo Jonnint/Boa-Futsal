@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Dashboard') - BOA Futsal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -62,10 +64,19 @@
 
             <a href="/admin/messages" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->is('admin/messages') ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <span class="font-bold text-sm">Pesan Masuk</span>
-                @php $unread = \App\Models\ContactMessage::where('status','unread')->count(); @endphp
-                @if($unread > 0)
-                    <span class="ml-auto px-2 py-0.5 bg-green-500 text-black text-xs font-extrabold rounded-full">{{ $unread }}</span>
+                <span class="font-bold text-sm">Pesan Masuk (Collab)</span>
+                @php $unreadCollab = \App\Models\ContactMessage::where('type', 'collab')->where('status','unread')->count(); @endphp
+                @if($unreadCollab > 0)
+                    <span class="ml-auto px-2 py-0.5 bg-green-500 text-black text-xs font-extrabold rounded-full">{{ $unreadCollab }}</span>
+                @endif
+            </a>
+
+            <a href="/admin/comments" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->is('admin/comments') ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                <span class="font-bold text-sm">Komentar Masuk</span>
+                @php $unreadComments = \App\Models\ContactMessage::where('type', 'general')->where('status','unread')->count(); @endphp
+                @if($unreadComments > 0)
+                    <span class="ml-auto px-2 py-0.5 bg-green-500 text-black text-xs font-extrabold rounded-full">{{ $unreadComments }}</span>
                 @endif
             </a>
 
@@ -159,7 +170,7 @@
     </script>
     
     <!-- AOS Animation Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.bg-white\\/5, .shadow-xl').forEach((el, index) => {

@@ -96,6 +96,13 @@ class AdminDashboardController extends Controller
         return view('admin.messages', compact('messages', 'unreadCount'));
     }
 
+    public function comments()
+    {
+        $messages = ContactMessage::where('type', 'general')->orderBy('created_at', 'desc')->paginate(20);
+        $unreadCount = ContactMessage::where('type', 'general')->where('status', 'unread')->count();
+        return view('admin.comments', compact('messages', 'unreadCount'));
+    }
+
     public function markRead($id)
     {
         ContactMessage::findOrFail($id)->update(['status' => 'read']);

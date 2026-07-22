@@ -101,8 +101,8 @@ Route::post('/webhook/fonnte', [\App\Http\Controllers\Admin\ChatbotController::c
 // Public API for field status (no auth required)
 Route::get('/api/field-status', [BookingController::class, 'getCurrentFieldStatus'])->name('field.status');
 
-// Public contact form (auth required for collab, guest allowed for general)
-Route::post('/contact', [ContactController::class, 'store'])->middleware('auth')->name('contact.store');
+// Public contact form (auth not required)
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/api/public-comments', [ContactController::class, 'publicComments'])->name('contact.public');
 
 // Admin routes
@@ -128,6 +128,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/messages', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'messages'])->name('admin.messages');
     Route::post('/messages/{id}/read', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'markRead'])->name('admin.messages.read');
     Route::delete('/messages/{id}', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'deleteMessage'])->name('admin.messages.delete');
+    
+    // Comments filtering
+    Route::get('/comments', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'comments'])->name('admin.comments');
+    Route::post('/comments/{id}/read', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'markRead'])->name('admin.comments.read');
+    Route::delete('/comments/{id}', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'deleteMessage'])->name('admin.comments.delete');
     
     // Vouchers
     Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class)->names([

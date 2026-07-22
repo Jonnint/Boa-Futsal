@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sejarah - BOA Futsal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -31,7 +33,7 @@
                     <div class="absolute -inset-1 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-[2.5rem] blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
                     
                     <div class="relative aspect-video (16/9) overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl">
-                        <img src="{{asset ('asset/img/sejarah.jfif')}}" 
+                        <img src="{{asset ('asset/img/sejarah.webp')}}" 
                              alt="Sejarah BOA Futsal" 
                              class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
                         
@@ -89,7 +91,7 @@
     </footer>
 
     <!-- AOS Animation Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Apply fade-up animation to sections automatically

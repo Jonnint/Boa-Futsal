@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOA Futsal - Futsal Arena Booking</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -25,7 +27,7 @@
     <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-transparent pb-32">
         <!-- Background Image with Seamless Mask -->
         <div class="absolute inset-0 z-0 pointer-events-none" style="mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent);">
-            <img src="{{ asset('asset/img/landing.jfif') }}" alt="Background" class="w-full h-full object-cover object-center opacity-40">
+            <img src="{{ asset('asset/img/landing.webp') }}" alt="Background" fetchpriority="high" class="w-full h-full object-cover object-center opacity-40">
             <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/40 to-transparent"></div>
         </div>
 
@@ -67,7 +69,7 @@
     <section id="facilities" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
         <!-- Background Image with Seamless Mask -->
         <div class="absolute inset-0 z-0" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent);">
-            <img src="{{ asset('asset/img/lapangan1.jfif') }}" alt="Background Fasilitas" class="w-full h-full object-cover object-center opacity-50">
+            <img src="{{ asset('asset/img/lapangan1.webp') }}" alt="Background Fasilitas" loading="lazy" class="w-full h-full object-cover object-center opacity-50">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
         </div>
 
@@ -121,9 +123,9 @@
         <!-- Responsive Background with Glassmorphism and Seamless Mask -->
         <div class="absolute inset-0 z-0" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent);">
             <!-- Mobile Background -->
-            <img src="{{ asset('asset/img/aboutus.jfif') }}" alt="Background Mobile" class="w-full h-full object-cover object-center md:hidden">
+            <img src="{{ asset('asset/img/aboutus.webp') }}" alt="Background Mobile" loading="lazy" class="w-full h-full object-cover object-center md:hidden">
             <!-- Desktop Background -->
-            <img src="{{ asset('asset/img/sejarah.jfif') }}" alt="Background Desktop" class="w-full h-full object-cover object-center hidden md:block">
+            <img src="{{ asset('asset/img/sejarah.webp') }}" alt="Background Desktop" loading="lazy" class="w-full h-full object-cover object-center hidden md:block">
             
             <!-- Glassmorphism Overlay -->
             <div class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
@@ -140,8 +142,8 @@
             @foreach($fields as $field)
             <div class="group bg-white/5 rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-green-500/30 transition-all duration-500 shadow-2xl" data-field-id="{{ $field->id }}">
                 <div class="h-64 overflow-hidden relative">
-                    <img src="{{ asset('asset/img/lapangan' . $field->id_field . '.jfif') }}" 
-                    class="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                    <img src="{{ asset('asset/img/lapangan' . $field->id_field . '.webp') }}" 
+                    class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy"
                     alt="{{ $field->name }}">
                     <span class="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md text-white text-xs font-bold rounded-full">Rumput Sintetis</span>
                     
@@ -308,19 +310,18 @@
                     <!-- General Comment Form -->
                     <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 shadow-2xl">
                         <h3 class="text-2xl font-extrabold mb-6 text-white">Tinggalkan Komentar</h3>
-                        @auth
                         <form method="POST" action="{{ route('contact.store') }}" class="space-y-5">
                             @csrf
                             <input type="hidden" name="type" value="general">
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Nama</label>
-                                <input type="text" name="name" value="{{ old('name', Auth::user()->name) }}" required
+                                <input type="text" name="name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" required
                                     class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="Nama kamu">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Email</label>
-                                <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" required
+                                <input type="email" name="email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" required
                                     class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="email@kamu.com">
                             </div>
@@ -341,22 +342,6 @@
                                 Kirim Komentar
                             </button>
                         </form>
-                        @else
-                        <div class="flex flex-col items-center justify-center h-full text-center py-10 gap-6">
-                            <div class="w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.2)]">
-                                <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-white font-extrabold text-xl mb-2">Login Dulu Yuk!</p>
-                                <p class="text-gray-400 text-sm font-medium">Kamu perlu login sebelum bisa meninggalkan komentar atau ulasan.</p>
-                            </div>
-                            <a href="{{ route('login') }}" class="px-8 py-3.5 bg-green-500 text-black rounded-xl font-bold hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
-                                Login Sekarang
-                            </a>
-                        </div>
-                        @endauth
                     </div>
                 </div>
 
@@ -381,20 +366,19 @@
                         <h3 class="text-3xl font-extrabold mb-3 text-white">Collab & <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Sponsorship</span></h3>
                         <p class="text-gray-400 text-sm max-w-lg mx-auto font-medium">Tertarik untuk berkolaborasi atau menjadi sponsor BOA Futsal? Isi form di bawah dan tim kami akan segera menghubungi kamu.</p>
                     </div>
-                    @auth
                     <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
                         @csrf
                         <input type="hidden" name="type" value="collab">
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Nama / Perusahaan</label>
-                                <input type="text" name="name" value="{{ old('name', Auth::user()->name) }}" required
+                                <input type="text" name="name" value="{{ old('name', Auth::check() ? Auth::user()->name : '') }}" required
                                     class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="Nama atau perusahaan kamu">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-green-400 mb-2 uppercase tracking-widest">Email</label>
-                                <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" required
+                                <input type="email" name="email" value="{{ old('email', Auth::check() ? Auth::user()->email : '') }}" required
                                     class="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all font-medium"
                                     placeholder="email@perusahaan.com">
                             </div>
@@ -419,22 +403,6 @@
                             </svg>
                         </button>
                     </form>
-                    @else
-                    <div class="flex flex-col items-center justify-center text-center py-12 gap-6">
-                        <div class="w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(34,197,94,0.2)]">
-                            <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-white font-extrabold text-xl mb-2">Login Dulu Yuk!</p>
-                            <p class="text-gray-400 text-sm font-medium">Kamu perlu login sebelum bisa mengirim proposal kerjasama.</p>
-                        </div>
-                        <a href="{{ route('login') }}" class="px-8 py-3.5 bg-green-500 text-black rounded-xl font-bold hover:bg-green-400 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
-                            Login Sekarang
-                        </a>
-                    </div>
-                    @endauth
                 </div>
             </div>
 
@@ -718,7 +686,7 @@
     <footer class="relative pt-32 pb-16 overflow-hidden mt-10">
         <!-- Background Image -->
         <div class="absolute inset-0 z-0">
-            <img src="{{ asset('asset/img/landing.jfif') }}" alt="Footer Background" class="w-full h-full object-cover object-center opacity-40">
+            <img src="{{ asset('asset/img/landing.webp') }}" alt="Footer Background" class="w-full h-full object-cover object-center opacity-40">
             <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/80 to-[#050505]"></div>
         </div>
 
@@ -877,7 +845,7 @@
     </script>
 
     <!-- AOS Animation Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Apply fade-up animation to sections and cards automatically
