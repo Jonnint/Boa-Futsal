@@ -47,6 +47,10 @@
                         <span class="relative z-10">Lapangan</span>
                         <div class="absolute inset-0 bg-green-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
                     </a>
+                    <a href="{{ route('cara-booking.index') }}" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors rounded-lg overflow-hidden group">
+                        <span class="relative z-10">Cara Booking</span>
+                        <div class="absolute inset-0 bg-green-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                    </a>
                     <a href="#contact" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors rounded-lg overflow-hidden group">
                         <span class="relative z-10">Contact Us</span>
                         <div class="absolute inset-0 bg-green-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
@@ -90,6 +94,7 @@
             <a href="#home" class="mobile-link text-3xl font-extrabold text-gray-400 hover:text-white hover:scale-110 transition-all duration-300 translate-y-10 opacity-0">Home</a>
             <a href="#facilities" class="mobile-link text-3xl font-extrabold text-gray-400 hover:text-white hover:scale-110 transition-all duration-300 translate-y-10 opacity-0">Fasilitas</a>
             <a href="#fields" class="mobile-link text-3xl font-extrabold text-gray-400 hover:text-white hover:scale-110 transition-all duration-300 translate-y-10 opacity-0">Lapangan</a>
+            <a href="{{ route('cara-booking.index') }}" class="mobile-link text-3xl font-extrabold text-green-400 hover:text-green-300 hover:scale-110 transition-all duration-300 translate-y-10 opacity-0">Cara Booking</a>
             <a href="#contact" class="mobile-link text-3xl font-extrabold text-gray-400 hover:text-white hover:scale-110 transition-all duration-300 translate-y-10 opacity-0">Contact Us</a>
             
             <div class="w-24 h-px bg-white/10 my-4 mobile-link translate-y-10 opacity-0 transition-all duration-300 delay-200"></div>

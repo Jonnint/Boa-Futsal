@@ -16,6 +16,10 @@ Route::get('/sejarah', function () {
     return view('sejarah');
 })->name('sejarah.index');
 
+Route::get('/cara-booking', function () {
+    return view('cara-booking');
+})->name('cara-booking.index');
+
 Route::get('/dashboard', function () {
     $user = Auth::user();
     
