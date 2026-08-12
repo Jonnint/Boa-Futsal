@@ -14,13 +14,15 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin BOA Futsal',
-            'email' => 'admin@boafutsal.com',
-            'phone' => '081234567890',
-            'password' => Hash::make('admin123'),
-            'role' => 'admin',
-            'is_member' => false,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@boafutsal.com'],
+            [
+                'name' => 'Admin BOA Futsal',
+                'phone' => '081234567890',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+                'is_member' => false,
+            ]
+        );
     }
 }

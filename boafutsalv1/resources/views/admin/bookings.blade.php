@@ -118,14 +118,14 @@
                                         <div class="flex items-center justify-end gap-2">
                                             @if($booking->status === 'pending')
                                                 <!-- Confirm Button -->
-                                                <form method="POST" action="{{ route('admin.bookings.update-status', [$booking->id_booking, 'confirmed']) }}" class="inline" onsubmit="return confirm('Konfirmasi booking ini?')">
+                                                <form method="POST" action="{{ route('admin.bookings.confirm', $booking->id_booking) }}" class="inline" onsubmit="return confirm('Konfirmasi booking ini?')">
                                                     @csrf
                                                     <button type="submit" class="p-2 bg-green-500/10 text-green-400 rounded-lg hover:bg-green-500 hover:text-white transition-all shadow-[0_0_10px_rgba(34,197,94,0)] hover:shadow-[0_0_15px_rgba(34,197,94,0.5)]" title="Konfirmasi Booking">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                                     </button>
                                                 </form>
                                                 <!-- Cancel Button -->
-                                                <form method="POST" action="{{ route('admin.bookings.update-status', [$booking->id_booking, 'cancelled']) }}" class="inline" onsubmit="return confirm('Batalkan booking ini?')">
+                                                <form method="POST" action="{{ route('admin.bookings.cancel', $booking->id_booking) }}" class="inline" onsubmit="return confirm('Batalkan booking ini?')">
                                                     @csrf
                                                     <button type="submit" class="p-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-[0_0_10px_rgba(239,68,68,0)] hover:shadow-[0_0_15px_rgba(239,68,68,0.5)]" title="Batalkan Booking">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -134,7 +134,7 @@
                                             @endif
                                             
                                             <!-- Delete Button -->
-                                            <form method="POST" action="{{ route('admin.bookings.destroy', $booking->id_booking) }}" class="inline" onsubmit="return confirm('Yakin ingin menghapus data booking ini secara permanen?')">
+                                            <form method="POST" action="{{ route('admin.bookings.delete', $booking->id_booking) }}" class="inline" onsubmit="return confirm('Yakin ingin menghapus data booking ini secara permanen?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="p-2 bg-gray-500/10 text-gray-400 rounded-lg hover:bg-red-500 hover:text-white transition-all ml-2" title="Hapus Permanen">
@@ -230,13 +230,13 @@
                                 <!-- Actions -->
                                 <div class="pt-3 border-t border-white/5 flex items-center justify-end gap-2">
                                     @if($booking->status === 'pending')
-                                        <form method="POST" action="{{ route('admin.bookings.update-status', [$booking->id_booking, 'confirmed']) }}" class="flex-1" onsubmit="return confirm('Konfirmasi booking ini?')">
+                                        <form method="POST" action="{{ route('admin.bookings.confirm', $booking->id_booking) }}" class="flex-1" onsubmit="return confirm('Konfirmasi booking ini?')">
                                             @csrf
                                             <button type="submit" class="w-full py-2.5 bg-green-500/10 text-green-400 rounded-lg text-sm font-bold hover:bg-green-500 hover:text-white transition-colors border border-green-500/20 flex items-center justify-center gap-2">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Konfirmasi
                                             </button>
                                         </form>
-                                        <form method="POST" action="{{ route('admin.bookings.update-status', [$booking->id_booking, 'cancelled']) }}" class="flex-1" onsubmit="return confirm('Batalkan booking ini?')">
+                                        <form method="POST" action="{{ route('admin.bookings.cancel', $booking->id_booking) }}" class="flex-1" onsubmit="return confirm('Batalkan booking ini?')">
                                             @csrf
                                             <button type="submit" class="w-full py-2.5 bg-red-500/10 text-red-400 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white transition-colors border border-red-500/20 flex items-center justify-center gap-2">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg> Batalkan
@@ -244,7 +244,7 @@
                                         </form>
                                     @endif
                                     
-                                    <form method="POST" action="{{ route('admin.bookings.destroy', $booking->id_booking) }}" class="{{ $booking->status === 'pending' ? 'shrink-0' : 'flex-1' }}" onsubmit="return confirm('Yakin ingin menghapus data booking ini secara permanen?')">
+                                    <form method="POST" action="{{ route('admin.bookings.delete', $booking->id_booking) }}" class="{{ $booking->status === 'pending' ? 'shrink-0' : 'flex-1' }}" onsubmit="return confirm('Yakin ingin menghapus data booking ini secara permanen?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="{{ $booking->status === 'pending' ? 'p-2.5' : 'w-full py-2.5 flex items-center justify-center gap-2' }} bg-gray-500/10 text-gray-400 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white transition-colors border border-gray-500/20">
