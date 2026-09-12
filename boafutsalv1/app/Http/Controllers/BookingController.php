@@ -13,7 +13,9 @@ class BookingController extends Controller
 {
     public function create($fieldId)
     {
-        $field = Field::with('prices')->findOrFail($fieldId);
+        $field = Field::with(['prices', 'sportType'])
+            ->activeSportType()
+            ->findOrFail($fieldId);
         
         return view('bookings.create', compact('field'));
     }
@@ -41,7 +43,7 @@ class BookingController extends Controller
         
         $request->validate($rules);
 
-        $field = Field::findOrFail($request->field_id);
+        $field = Field::with('sportType')->activeSportType()->findOrFail($request->field_id);
         $bookingDate = Carbon::parse($request->booking_date);
         $startTime = Carbon::createFromFormat('H:i', $request->start_time);
         $endTime = $startTime->copy()->addHours((int)$request->duration_hours);
@@ -108,6 +110,8 @@ class BookingController extends Controller
         // Prepare booking data
         $bookingData = [
             'field_id' => $request->field_id,
+            'sport_type_name_snapshot' => $field->sportType ? $field->sportType->name : 'Futsal',
+            'field_name_snapshot' => $field->name,
             'booking_date' => $bookingDate->format('Y-m-d'),
             'start_time' => $startTime->format('H:i'),
             'end_time' => $endTime->format('H:i'),
@@ -156,7 +160,7 @@ class BookingController extends Controller
                 "Nama: {$booking->guest_name}\n" .
                 "Email: {$booking->guest_email}\n" .
                 "Telepon: {$booking->guest_phone}\n" .
-                "Lapangan: {$field->name}\n" .
+                "Lapangan: {$booking->field_name_snapshot} ({$booking->sport_type_name_snapshot})\n" .
                 "Tanggal: " . \Carbon\Carbon::parse($booking->booking_date)->format('d F Y') . "\n" .
                 "Waktu: " . date('H:i', strtotime($booking->start_time)) . " - " . date('H:i', strtotime($booking->end_time)) . "\n" .
                 "Durasi: {$booking->duration_hours} jam\n";
@@ -203,7 +207,9 @@ class BookingController extends Controller
 
     public function getFieldSchedule($fieldId, $date)
     {
-        $bookings = Booking::where('field_id', $fieldId)
+        $field = Field::activeSportType()->findOrFail($fieldId);
+
+        $bookings = Booking::where('field_id', $field->id_field)
             ->where('booking_date', $date)
             ->whereIn('status', ['pending', 'confirmed'])
             ->orderBy('start_time')
@@ -218,13 +224,13 @@ class BookingController extends Controller
         $currentDate = $now->format('Y-m-d');
         $currentTime = $now->format('H:i:s');
 
-        $fields = Field::where('is_active', true)->get();
+        $fields = Field::activeSportType()->where('is_active', true)->get();
         $fieldStatuses = [];
 
         foreach ($fields as $field) {
             // Only check confirmed bookings (not completed or cancelled)
             // Use DATE() to compare only the date part
-            $currentBooking = Booking::where('field_id', $field->id)
+            $currentBooking = Booking::where('field_id', $field->id_field)
                 ->whereRaw("DATE(booking_date) = ?", [$currentDate])
                 ->where('status', 'confirmed')
                 ->whereRaw("TIME(start_time) <= ?", [$currentTime])
@@ -232,7 +238,7 @@ class BookingController extends Controller
                 ->first();
 
             // Next booking can be pending or confirmed (not completed or cancelled)
-            $nextBooking = Booking::where('field_id', $field->id)
+            $nextBooking = Booking::where('field_id', $field->id_field)
                 ->whereRaw("DATE(booking_date) = ?", [$currentDate])
                 ->whereIn('status', ['pending', 'confirmed'])
                 ->whereRaw("TIME(start_time) > ?", [$currentTime])
