@@ -28,6 +28,8 @@ class Booking extends Model
         'voucher_code',
         'original_price',
         'discount_amount',
+        'sport_type_name_snapshot',
+        'field_name_snapshot',
     ];
 
     protected $casts = [
