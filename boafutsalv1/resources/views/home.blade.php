@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOA Futsal - Futsal Arena Booking</title>
+    <title>{{ $activeSportType->meta_title ?? (($activeSportType->name ?? 'BOA Futsal') . ' - Arena Booking') }}</title>
     <link rel="icon" type="image/jpeg" href="{{ asset('asset/img/favicon.jpg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,21 +25,21 @@
 
     <x-public-navbar />
 
-    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-transparent pb-32">
+    <section id="home" class="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center pt-24 pb-12 overflow-hidden bg-transparent">
         <!-- Background Image with Seamless Mask -->
         <div class="absolute inset-0 z-0 pointer-events-none" style="mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent);">
-            <img src="{{ asset('asset/img/landing.webp') }}" alt="Background" fetchpriority="high" class="w-full h-full object-cover object-center opacity-40">
+            <img src="{{ asset($activeSportType->hero_image_path ?? 'asset/img/landing.webp') }}" alt="Background" fetchpriority="high" class="w-full h-full object-cover object-center opacity-40">
             <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/40 to-transparent"></div>
         </div>
 
         <div class="container mx-auto px-6 z-10 relative flex flex-col items-center text-center">
             
             <h1 class="text-5xl md:text-7xl lg:text-[6rem] xl:text-[7rem] font-extrabold leading-[1.1] tracking-tighter text-white mb-6 uppercase">
-                MAIN PRO <span class="text-green-400">SETIAP HARI.</span>
+                {!! $activeSportType->hero_title ?? 'MAIN PRO <span class="text-green-400">SETIAP HARI.</span>' !!}
             </h1>
             
             <p class="text-gray-300 text-base md:text-lg max-w-2xl leading-relaxed mb-10">
-                Nikmati kualitas rumput internasional dan atmosfer stadion profesional di pusat kota. Booking lapanganmu dalam hitungan detik.
+                {{ $activeSportType->hero_subtitle ?? 'Nikmati kualitas rumput internasional dan atmosfer stadion profesional di pusat kota. Booking lapanganmu dalam hitungan detik.' }}
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4">
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-auto">
             <a href="#facilities" class="flex flex-col items-center opacity-50 hover:opacity-100 transition-opacity animate-bounce text-white hover:text-green-400">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -67,10 +67,10 @@
         </div>
     </section>
 
-    <section id="facilities" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
+    <section id="facilities" class="relative pt-12 md:pt-16 pb-20 bg-transparent z-10 pointer-events-none">
         <!-- Background Image with Seamless Mask -->
         <div class="absolute inset-0 z-0" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent);">
-            <img src="{{ asset('asset/img/lapangan1.webp') }}" alt="Background Fasilitas" loading="lazy" class="w-full h-full object-cover object-center opacity-50">
+            <img src="{{ asset($activeSportType->galleries->first()->image_path ?? 'asset/img/lapangan1.webp') }}" alt="Background Fasilitas" loading="lazy" class="w-full h-full object-cover object-center opacity-50">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
         </div>
 
@@ -81,46 +81,34 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Toilet -->
-                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
-                    <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                @if(!empty($activeSportType->facilities))
+                    @foreach($activeSportType->facilities as $fac)
+                    <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
+                        <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
+                            @if(($fac['icon'] ?? '') === 'toilet')
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            @elseif(($fac['icon'] ?? '') === 'mushola')
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            @elseif(($fac['icon'] ?? '') === 'kasir')
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                            @else
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            @endif
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-white">{{ $fac['name'] }}</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed text-justify">{{ $fac['desc'] }}</p>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Toilet</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-justify">Kamar mandi yang bersih dan terawat untuk menjamin kenyamanan para pengunjung sebelum atau sesudah berolahraga.</p>
-                </div>
-
-                <!-- Mushola -->
-                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
-                    <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    @endforeach
+                @else
+                    <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 text-center col-span-4 text-gray-400">
+                        Fasilitas lengkap berstandar internasional.
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Mushola</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-justify">Fasilitas ibadah yang nyaman dan bersih, dilengkapi dengan tempat wudhu agar ibadah Anda tetap terjaga.</p>
-                </div>
-
-                <!-- Kasir -->
-                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
-                    <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Kasir</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-justify">Area pelayanan untuk administrasi dan reservasi yang siap melayani dengan proses yang cepat serta ramah.</p>
-                </div>
-
-                <!-- Parkiran -->
-                <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-300 h-full flex flex-col shadow-2xl hover:shadow-[0_0_30px_rgba(34,197,94,0.15)] hover:-translate-y-2">
-                    <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400 mb-4 border border-green-500/20">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Parkiran</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed text-justify">Area parkir kendaraan untuk mobil dan motor yang aman, luas, serta sangat mudah diakses oleh pengunjung.</p>
-                </div>
+                @endif
             </div>
         </div>
     </section>
 
-    <section id="fields" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
+    <section id="fields" class="relative pt-16 md:pt-20 pb-24 bg-transparent z-10 pointer-events-none">
         <!-- Responsive Background with Glassmorphism and Seamless Mask -->
         <div class="absolute inset-0 z-0" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent);">
             <!-- Mobile Background -->
@@ -140,13 +128,13 @@
             </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
-            @foreach($fields as $field)
-            <div class="group bg-white/5 rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-green-500/30 transition-all duration-500 shadow-2xl" data-field-id="{{ $field->id }}">
+            @forelse($fields as $field)
+            <div class="group bg-white/5 rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-green-500/30 transition-all duration-500 shadow-2xl" data-field-id="{{ $field->id_field }}">
                 <div class="h-64 overflow-hidden relative">
-                    <img src="{{ asset('asset/img/lapangan' . $field->id_field . '.webp') }}" 
+                    <img src="{{ asset($field->image ?? ('asset/img/lapangan' . $field->id_field . '.webp')) }}" 
                     class="w-full h-full object-cover group-hover:scale-110 transition duration-700" loading="lazy"
                     alt="{{ $field->name }}">
-                    <span class="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md text-white text-xs font-bold rounded-full">Rumput Sintetis</span>
+                    <span class="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md text-white text-xs font-bold rounded-full">{{ $field->surface_type ?? 'Standar Arena' }}</span>
                     
                     <!-- Status Badge -->
                     <div class="field-status-badge absolute top-4 right-4 hidden">
@@ -161,7 +149,7 @@
                 </div>
                 <div class="p-8">
                     <h3 class="text-2xl font-bold mb-2">{{ $field->name }}</h3>
-                    <p class="text-gray-400 text-sm mb-4">Rumput sintetis terbaru. Minim risiko cedera lutut dan pantulan bola stabil.</p>
+                    <p class="text-gray-400 text-sm mb-4">{{ $field->description ?? 'Lapangan berstandar resmi dengan fasilitas terbaik.' }}</p>
                     
                     <!-- Real-time Status Info -->
                     <div class="field-status-info mb-6 hidden">
@@ -197,7 +185,11 @@
                     </button>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="col-span-full py-12 text-center text-gray-400 bg-white/5 rounded-3xl border border-white/10">
+                Belum ada lapangan yang terdaftar untuk jenis olahraga ini.
+            </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -225,7 +217,7 @@
     </div>
 </div>
 
-    <section id="contact" class="relative pt-64 pb-32 -mt-32 bg-transparent z-10 pointer-events-none">
+    <section id="contact" class="relative pt-16 md:pt-20 pb-24 bg-transparent z-10 pointer-events-none">
         <!-- Background Transition & Glows -->
         <div class="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-transparent via-[#050505] to-[#050505]" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);"></div>
         <div class="absolute top-1/2 left-0 w-96 h-96 bg-green-500/10 rounded-full blur-[120px] pointer-events-none"></div>
