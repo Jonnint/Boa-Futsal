@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             FieldSeeder::class,
             AdminSeeder::class,
+            DeveloperSeeder::class,
             ChatbotSettingSeeder::class,
+            SportTypeSeeder::class,
         ]);
     }
 }
