@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Field;
 
 Route::get('/', function () {
-    $fields = Field::with('prices')->where('is_active', true)->get();
+    $fields = Field::with('prices')->activeSportType()->where('is_active', true)->get();
     return view('home', compact('fields'));
 });
 
@@ -168,6 +168,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // Chatbot settings management
     Route::get('/chatbot', [\App\Http\Controllers\Admin\ChatbotController::class, 'index'])->name('admin.chatbot');
     Route::post('/chatbot/update', [\App\Http\Controllers\Admin\ChatbotController::class, 'update'])->name('admin.chatbot.update');
+
+    // Developer Only: Sport Types Switch & Management
+    Route::middleware('developer')->group(function () {
+        Route::get('/sport-types', [\App\Http\Controllers\Admin\SportTypeController::class, 'index'])->name('admin.sport-types.index');
+        Route::get('/sport-types/create', [\App\Http\Controllers\Admin\SportTypeController::class, 'create'])->name('admin.sport-types.create');
+        Route::post('/sport-types', [\App\Http\Controllers\Admin\SportTypeController::class, 'store'])->name('admin.sport-types.store');
+        Route::get('/sport-types/{id}/edit', [\App\Http\Controllers\Admin\SportTypeController::class, 'edit'])->name('admin.sport-types.edit');
+        Route::put('/sport-types/{id}', [\App\Http\Controllers\Admin\SportTypeController::class, 'update'])->name('admin.sport-types.update');
+        Route::post('/sport-types/{id}/activate', [\App\Http\Controllers\Admin\SportTypeController::class, 'activate'])->name('admin.sport-types.activate');
+        Route::delete('/sport-types/{id}', [\App\Http\Controllers\Admin\SportTypeController::class, 'destroy'])->name('admin.sport-types.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';
