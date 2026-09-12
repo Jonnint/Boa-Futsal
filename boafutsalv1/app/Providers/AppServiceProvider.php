@@ -22,5 +22,10 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production') {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+
+        \Illuminate\Support\Facades\View::composer(
+            ['home', 'cara-booking', 'sejarah', 'bookings.*', 'layouts.*', 'components.*'],
+            \App\Http\ViewComposers\ActiveSportTypeComposer::class
+        );
     }
 }
