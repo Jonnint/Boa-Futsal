@@ -11,7 +11,7 @@
             <!-- Logo -->
             <a href="/" class="relative group z-[60] flex items-center gap-2 text-2xl font-extrabold tracking-tighter text-green-400">
                 <div class="absolute -inset-2 bg-green-500/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <span class="relative">BOA<span class="text-white">FUTSAL</span></span>
+                <span class="relative">BOA<span class="text-white">{{ strtoupper($activeSportType->name ?? 'FUTSAL') }}</span></span>
             </a>
 
             @if($isSimple)
