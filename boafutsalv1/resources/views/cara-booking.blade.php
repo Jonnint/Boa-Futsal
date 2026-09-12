@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cara Booking - BOA Futsal</title>
+    <title>Cara Booking - BOA {{ strtoupper($activeSportType->name ?? 'Futsal') }}</title>
     <meta name="description" content="Panduan lengkap cara booking lapangan futsal di BOA Futsal. Bisa booking tanpa login atau daftar jadi member untuk keuntungan eksklusif.">
     <link rel="icon" type="image/jpeg" href="{{ asset('asset/img/favicon.jpg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
