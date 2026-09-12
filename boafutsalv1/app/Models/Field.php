@@ -14,11 +14,24 @@ class Field extends Model
         'image',
         'surface_type',
         'is_active',
+        'sport_type_id',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function sportType()
+    {
+        return $this->belongsTo(SportType::class, 'sport_type_id', 'id');
+    }
+
+    public function scopeActiveSportType($query)
+    {
+        return $query->whereHas('sportType', function ($q) {
+            $q->where('is_active', true);
+        });
+    }
 
     public function prices()
     {
