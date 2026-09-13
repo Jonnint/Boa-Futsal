@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Booking {{ $field->name }} - BOA Futsal</title>
+    <title>Booking {{ $field->name }} - BOA {{ $activeSportType->name ?? 'Futsal' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -158,7 +158,11 @@
                 <div class="lg:col-span-7">
                     <div class="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-6 md:p-10 shadow-2xl relative">
                         <div class="mb-8">
-                            <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Form <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Booking</span></h1>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-green-400 text-xs font-bold uppercase tracking-wider mb-3">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                                {{ $activeSportType ? $activeSportType->getSectionValue('booking', 'page_badge', 'Reservasi Lapangan') : 'Reservasi Lapangan' }}
+                            </div>
+                            <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Form <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Booking {{ $activeSportType->name ?? 'Futsal' }}</span></h1>
                             <p class="text-gray-400 font-medium">Lengkapi detail di bawah ini untuk mengamankan slot lapanganmu.</p>
                         </div>
 
@@ -441,14 +445,22 @@
                                 ></textarea>
                             </div>
 
+                            <!-- Policy Note -->
+                            @if($activeSportType && $activeSportType->getSectionValue('booking', 'policy_note'))
+                                <div class="p-4 bg-white/5 border border-white/10 rounded-xl flex items-start gap-3 text-xs text-gray-400">
+                                    <span class="text-base">📌</span>
+                                    <p class="leading-relaxed">{{ $activeSportType->getSectionValue('booking', 'policy_note') }}</p>
+                                </div>
+                            @endif
+
                             <!-- Submit -->
-                            <div class="pt-4">
+                            <div class="pt-2">
                                 <button 
                                     type="submit"
                                     class="w-full py-4 bg-gradient-to-r from-green-400 to-green-600 text-black rounded-xl font-extrabold text-base md:text-lg hover:from-green-300 hover:to-green-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] flex items-center justify-center gap-2 group"
                                 >
                                     @guest
-                                        Lanjutkan ke Pembayaran
+                                        {{ $activeSportType ? $activeSportType->getSectionValue('booking', 'cta_button_text', 'Lanjutkan ke Pembayaran') : 'Lanjutkan ke Pembayaran' }}
                                     @else
                                         Booking Sekarang
                                     @endguest
@@ -470,7 +482,7 @@
 
     <!-- Footer Simple -->
     <footer class="py-6 border-t border-white/5 text-center mt-auto z-10 relative">
-        <p class="text-xs text-gray-600 font-medium">© {{ date('Y') }} BOA Futsal. All rights reserved.</p>
+        <p class="text-xs text-gray-600 font-medium">© {{ date('Y') }} BOA {{ strtoupper($activeSportType->name ?? 'Futsal') }}. All rights reserved.</p>
     </footer>
 
     <script>
