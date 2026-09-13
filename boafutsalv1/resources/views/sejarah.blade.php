@@ -22,9 +22,11 @@
     <section class="pt-32 pb-12">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
-                <p class="text-green-400 font-bold tracking-widest uppercase text-sm mb-3">Since 2009</p>
+                <p class="text-green-400 font-bold tracking-widest uppercase text-sm mb-3">
+                    {{ $activeSportType ? $activeSportType->getSectionValue('sejarah', 'header_subtitle', 'Since 2009') : 'Since 2009' }}
+                </p>
                 <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter uppercase italic">
-                    Our <span class="text-green-400">Legacy</span>
+                    {!! $activeSportType ? $activeSportType->getSectionValue('sejarah', 'header_title', 'Our <span class="text-green-400">Legacy</span>') : 'Our <span class="text-green-400">Legacy</span>' !!}
                 </h1>
             </div>
 
@@ -33,8 +35,8 @@
                     <div class="absolute -inset-1 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-[2.5rem] blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
                     
                     <div class="relative aspect-video (16/9) overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl">
-                        <img src="{{asset ('asset/img/sejarah.webp')}}" 
-                             alt="Sejarah BOA Futsal" 
+                        <img src="{{ asset($activeSportType?->getSectionImage('sejarah', 'profile_image') ?? ($activeSportType?->hero_image_path ?? 'asset/img/sejarah.webp')) }}" 
+                             alt="Sejarah BOA {{ $activeSportType->name ?? 'Futsal' }}" 
                              class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -47,47 +49,50 @@
     <article class="py-16">
         <div class="container mx-auto px-6 max-w-3xl">
             <div class="space-y-12 text-gray-400 text-lg leading-relaxed">
-                <section>
-                    <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                        <span class="w-8 h-1 bg-green-500 rounded-full"></span>
-                        Awal Mula (2009)
-                    </h2>
-                    <p>
-                        BOA Futsal bermula dari sebuah garasi kecil dan kecintaan komunitas lokal terhadap sepak bola dalam ruangan. Kami melihat perlunya standar lapangan yang lebih baik di kota ini—tempat di mana setiap pemain merasa seperti seorang profesional.
-                    </p>
-                </section>
+                @if($activeSportType && $activeSportType->getSectionValue('sejarah', 'body_text'))
+                    {!! $activeSportType->getSectionValue('sejarah', 'body_text') !!}
+                @else
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                            <span class="w-8 h-1 bg-green-500 rounded-full"></span>
+                            Awal Mula (2009)
+                        </h2>
+                        <p>
+                            BOA Futsal bermula dari sebuah garasi kecil dan kecintaan komunitas lokal terhadap sepak bola dalam ruangan. Kami melihat perlunya standar lapangan yang lebih baik di kota ini—tempat di mana setiap pemain merasa seperti seorang profesional.
+                        </p>
+                    </section>
 
-                <section>
-                    <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                        <span class="w-8 h-1 bg-green-500 rounded-full"></span>
-                        Visi & Misi
-                    </h2>
-                    <p>
-                        Bukan sekadar bisnis persewaan, BOA Futsal dibangun untuk menjadi pusat pembinaan talenta muda. Dengan menghadirkan teknologi pencahayaan LED terbaru dan permukaan lantai internasional, kami berkomitmen memberikan pengalaman bermain yang aman dan kompetitif.
-                    </p>
-                </section>
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                            <span class="w-8 h-1 bg-green-500 rounded-full"></span>
+                            Visi & Misi
+                        </h2>
+                        <p>
+                            Bukan sekadar bisnis persewaan, BOA Futsal dibangun untuk menjadi pusat pembinaan talenta muda. Dengan menghadirkan teknologi pencahayaan LED terbaru dan permukaan lantai internasional, kami berkomitmen memberikan pengalaman bermain yang aman dan kompetitif.
+                        </p>
+                    </section>
 
-                <blockquote class="p-8 bg-white/5 border-l-4 border-green-500 rounded-r-2xl italic text-white text-xl">
-                    "Kami tidak hanya membangun lapangan, kami membangun komunitas juara."
-                    <footer class="text-sm text-green-400 mt-2 not-italic">— Founder BOA Futsal</footer>
-                </blockquote>
+                    <blockquote class="p-8 bg-white/5 border-l-4 border-green-500 rounded-r-2xl italic text-white text-xl">
+                        "Kami tidak hanya membangun lapangan, kami membangun komunitas juara."
+                        <footer class="text-sm text-green-400 mt-2 not-italic">— Founder BOA {{ $activeSportType->name ?? 'Futsal' }}</footer>
+                    </blockquote>
 
-                <section>
-                    <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                        <span class="w-8 h-1 bg-green-500 rounded-full"></span>
-                        Hari Ini
-                    </h2>
-                    <p>
-                        Kini, BOA Futsal telah menjadi destinasi utama bagi turnamen amatir maupun profesional di Jakarta Selatan. kami terus berinovasi untuk mendukung gairah olahraga Anda.
-                    </p>
-                </section>
+                    <section>
+                        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                            <span class="w-8 h-1 bg-green-500 rounded-full"></span>
+                            Hari Ini
+                        </h2>
+                        <p>
+                            Kini, BOA {{ $activeSportType->name ?? 'Futsal' }} telah menjadi destinasi utama bagi turnamen amatir maupun profesional di Jakarta Selatan. Kami terus berinovasi untuk mendukung gairah olahraga Anda.
+                        </p>
+                    </section>
+                @endif
             </div>
         </div>
     </article>
 
     <footer class="py-10 border-t border-white/5 text-center text-gray-600 text-sm">
-        &copy; 2026 BOA Futsal Arena.
-    </footer>
+        &copy; {{ date('Y') }} BOA {{ strtoupper($activeSportType->name ?? 'Futsal') }} Arena.
     </footer>
 
     <!-- AOS Animation Script -->
