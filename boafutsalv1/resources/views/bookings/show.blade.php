@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Booking - BOA Futsal</title>
+    <title>{{ $activeSportType ? $activeSportType->getSectionValue('booking_detail', 'header_title', 'Detail Booking') : 'Detail Booking' }} - BOA {{ $activeSportType->name ?? 'Futsal' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,7 +71,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Main Info -->
                     <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
-                        <h1 class="text-3xl font-extrabold mb-6">Detail Booking</h1>
+                        <h1 class="text-3xl font-extrabold mb-6">{{ $activeSportType ? $activeSportType->getSectionValue('booking_detail', 'header_title', 'Detail Booking') : 'Detail Booking' }}</h1>
 
                         <div class="space-y-4">
                             <!-- Guest or Member Info -->
@@ -174,8 +174,18 @@
                         <div class="mt-6 p-4 bg-white/5 rounded-xl">
                             <p class="text-sm text-gray-400 mb-2">💳 Metode Pembayaran</p>
                             <p class="font-bold text-green-400">Bayar di Kasir</p>
-                            <p class="text-xs text-gray-500 mt-1">Silakan lakukan pembayaran di kasir BOA Futsal sebelum waktu booking</p>
+                            <p class="text-xs text-gray-500 mt-1">Silakan lakukan pembayaran di kasir BOA {{ $activeSportType->name ?? 'Futsal' }} sebelum waktu booking</p>
                         </div>
+
+                        @if($activeSportType && $activeSportType->getSectionValue('booking_detail', 'footer_note'))
+                        <div class="mt-4 p-4 bg-white/5 border border-white/10 rounded-xl flex items-start gap-3">
+                            <span class="text-base">📌</span>
+                            <div>
+                                <p class="text-xs font-bold text-white mb-0.5">Catatan Reservasi:</p>
+                                <p class="text-xs text-gray-400 leading-relaxed">{{ $activeSportType->getSectionValue('booking_detail', 'footer_note') }}</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -214,6 +224,16 @@
                         <div class="p-6 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
                             <p class="text-yellow-400 text-sm font-bold mb-2">⏳ Menunggu Konfirmasi</p>
                             <p class="text-xs text-gray-400">Booking kamu akan dikonfirmasi oleh admin setelah pembayaran di kasir</p>
+                        </div>
+                        @endif
+
+                        @if($activeSportType && $activeSportType->getSectionValue('booking_detail', 'wa_cta_text'))
+                        <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
+                            <p class="text-green-400 text-sm font-bold mb-2">💬 Bantuan Customer Service</p>
+                            <p class="text-xs text-gray-400 mb-4 leading-relaxed">{{ $activeSportType->getSectionValue('booking_detail', 'wa_cta_text') }}</p>
+                            <a href="https://wa.me/6281234567890?text=Halo%20Admin%2C%20saya%20ingin%20bertanya%20tentang%20booking%20%23{{ $booking->id_booking }}" target="_blank" class="block w-full py-2.5 bg-green-500/10 border border-green-500/20 text-green-400 hover:bg-green-500 hover:text-black rounded-lg font-bold text-center transition-all text-xs">
+                                Chat CS via WhatsApp
+                            </a>
                         </div>
                         @endif
                     </div>
