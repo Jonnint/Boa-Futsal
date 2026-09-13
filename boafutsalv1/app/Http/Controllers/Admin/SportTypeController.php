@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SportType;
 use App\Models\SportTypeGallery;
+use App\Models\SportTypePageSection;
 use App\Models\SportTypeSwitchLog;
 use App\Services\ArchiveGalleryService;
 use Illuminate\Http\Request;
@@ -121,9 +122,18 @@ class SportTypeController extends Controller
         return redirect()->route('admin.sport-types.index')->with('success', "Sport Type {$sportType->name} berhasil ditambahkan!");
     }
 
+    public function editActive()
+    {
+        $sportType = SportType::with(['galleries', 'pageSections'])->where('is_active', true)->first();
+        if (!$sportType) {
+            $sportType = SportType::with(['galleries', 'pageSections'])->firstOrFail();
+        }
+        return view('admin.sport-types.edit', compact('sportType'));
+    }
+
     public function edit($id)
     {
-        $sportType = SportType::with(['galleries'])->findOrFail($id);
+        $sportType = SportType::with(['galleries', 'pageSections'])->findOrFail($id);
         return view('admin.sport-types.edit', compact('sportType'));
     }
 
@@ -141,6 +151,8 @@ class SportTypeController extends Controller
             'meta_description' => 'nullable|string|max:255',
             'facilities' => 'nullable|array',
             'gallery_images.*' => 'nullable|image|max:5120',
+            'sections' => 'nullable|array',
+            'section_images.*.*' => 'nullable|image|max:5120',
         ]);
 
         $heroImagePath = $sportType->hero_image_path;
@@ -176,6 +188,58 @@ class SportTypeController extends Controller
             'meta_description' => $request->meta_description,
         ]);
 
+        // Generic page sections update
+        if ($request->filled('sections')) {
+            foreach ($request->sections as $pageKey => $secKeys) {
+                foreach ($secKeys as $secKey => $val) {
+                    $section = SportTypePageSection::firstOrNew([
+                        'sport_type_id' => $sportType->id,
+                        'page_key' => $pageKey,
+                        'section_key' => $secKey,
+                    ]);
+
+                    if (!$section->exists) {
+                        $section->label = ucwords(str_replace('_', ' ', $secKey));
+                    }
+
+                    if (is_array($val)) {
+                        $section->content_type = 'list_item';
+                        $section->content_value = json_encode($val);
+                    } else {
+                        $section->content_value = $val;
+                    }
+
+                    $section->save();
+                }
+            }
+        }
+
+        // Handle section image uploads
+        if ($request->hasFile('section_images')) {
+            foreach ($request->file('section_images') as $pageKey => $secKeys) {
+                foreach ($secKeys as $secKey => $file) {
+                    if ($file && $file->isValid()) {
+                        $fileName = $pageKey . '_' . $secKey . '_' . time() . '.' . $file->getClientOriginalExtension();
+                        $file->move(public_path('uploads/sport-types/sections'), $fileName);
+                        $imagePath = 'uploads/sport-types/sections/' . $fileName;
+
+                        SportTypePageSection::updateOrCreate(
+                            [
+                                'sport_type_id' => $sportType->id,
+                                'page_key' => $pageKey,
+                                'section_key' => $secKey,
+                            ],
+                            [
+                                'label' => ucwords(str_replace('_', ' ', $secKey)),
+                                'content_type' => 'image',
+                                'image_path' => $imagePath,
+                            ]
+                        );
+                    }
+                }
+            }
+        }
+
         // Upload new gallery images
         if ($request->hasFile('gallery_images')) {
             $currentOrder = $sportType->galleries()->max('order') ?? 0;
@@ -210,7 +274,7 @@ class SportTypeController extends Controller
             Cache::forget('active_sport_type');
         }
 
-        return redirect()->route('admin.sport-types.index')->with('success', "Konten Sport Type {$sportType->name} berhasil diperbarui!");
+        return redirect()->back()->with('success', "Konten Sport Type {$sportType->name} berhasil diperbarui di seluruh halaman!");
     }
 
     public function activate(Request $request, $id)
@@ -235,7 +299,8 @@ class SportTypeController extends Controller
 
         // Switch active: Deactivate all, activate this
         SportType::query()->update(['is_active' => false]);
-        $sportType->update(['is_active' => true]);
+        SportType::where('id', $sportType->id)->update(['is_active' => true]);
+        $sportType->refresh();
 
         // Audit log
         SportTypeSwitchLog::create([
