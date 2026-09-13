@@ -47,4 +47,43 @@ class SportType extends Model
     {
         return $this->hasMany(SportTypeSwitchLog::class, 'to_sport_type_id', 'id');
     }
+
+    public function pageSections(): HasMany
+    {
+        return $this->hasMany(SportTypePageSection::class, 'sport_type_id', 'id')->orderBy('order');
+    }
+
+    public function getSection(string $pageKey, string $sectionKey): ?SportTypePageSection
+    {
+        if ($this->relationLoaded('pageSections')) {
+            return $this->pageSections->first(function ($section) use ($pageKey, $sectionKey) {
+                return $section->page_key === $pageKey && $section->section_key === $sectionKey;
+            });
+        }
+
+        return $this->pageSections()
+            ->where('page_key', $pageKey)
+            ->where('section_key', $sectionKey)
+            ->first();
+    }
+
+    public function getSectionValue(string $pageKey, string $sectionKey, $default = '')
+    {
+        $section = $this->getSection($pageKey, $sectionKey);
+        if (!$section) {
+            return $default;
+        }
+
+        return $section->parsed_value ?: $default;
+    }
+
+    public function getSectionImage(string $pageKey, string $sectionKey, $default = null): ?string
+    {
+        $section = $this->getSection($pageKey, $sectionKey);
+        if (!$section || !$section->image_path) {
+            return $default;
+        }
+
+        return $section->image_path;
+    }
 }
