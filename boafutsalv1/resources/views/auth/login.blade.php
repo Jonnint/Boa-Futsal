@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - BOA Futsal</title>
+    <title>Login - BOA {{ strtoupper($activeSportType->name ?? 'Futsal') }}</title>
     <link rel="icon" type="image/jpeg" href="{{ asset('asset/img/favicon.jpg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,9 @@
 
     <div class="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden">
         <!-- Background Effects -->
+        @if($activeSportType?->hero_image_path)
+            <div class="absolute inset-0 z-0 opacity-15 bg-cover bg-center pointer-events-none" style="background-image: url('{{ asset($activeSportType->hero_image_path) }}')"></div>
+        @endif
         <div class="absolute top-0 -left-20 w-96 h-96 bg-green-600/10 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-0 -right-20 w-96 h-96 bg-green-900/10 rounded-full blur-[120px]"></div>
 
@@ -26,10 +29,10 @@
             <div class="text-center mb-8">
                 <a href="/" class="inline-block">
                     <h1 class="text-4xl font-extrabold tracking-tighter text-green-400">
-                        BOA<span class="text-white">FUTSAL</span>
+                        BOA<span class="text-white">{{ strtoupper($activeSportType->name ?? 'FUTSAL') }}</span>
                     </h1>
                 </a>
-                <p class="text-gray-400 mt-2">Masuk ke akun kamu</p>
+                <p class="text-gray-400 mt-2">Masuk ke akun {{ $activeSportType->name ?? 'BOA Futsal' }} kamu</p>
             </div>
 
             <!-- Login Card -->
