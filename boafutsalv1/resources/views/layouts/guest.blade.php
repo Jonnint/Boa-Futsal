@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ $activeSportType ? 'BOA ' . strtoupper($activeSportType->name) : config('app.name', 'Laravel') }}</title>
         <link rel="icon" type="image/jpeg" href="{{ asset('asset/img/favicon.jpg') }}">
 
         <!-- Fonts -->
