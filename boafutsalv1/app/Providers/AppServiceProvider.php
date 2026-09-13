@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         \Illuminate\Support\Facades\View::composer(
-            ['home', 'cara-booking', 'sejarah', 'bookings.*', 'layouts.*', 'components.*'],
+            ['home', 'cara-booking', 'sejarah', 'bookings.*', 'layouts.*', 'components.*', 'auth.*'],
             \App\Http\ViewComposers\ActiveSportTypeComposer::class
         );
     }
