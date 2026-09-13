@@ -169,13 +169,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/chatbot', [\App\Http\Controllers\Admin\ChatbotController::class, 'index'])->name('admin.chatbot');
     Route::post('/chatbot/update', [\App\Http\Controllers\Admin\ChatbotController::class, 'update'])->name('admin.chatbot.update');
 
-    // Developer Only: Sport Types Switch & Management
+    // Sport Types Content Editing (Accessible by Admin and Developer)
+    Route::get('/sport-types/edit-active', [\App\Http\Controllers\Admin\SportTypeController::class, 'editActive'])->name('admin.sport-types.edit-active');
+    Route::get('/sport-types/{id}/edit', [\App\Http\Controllers\Admin\SportTypeController::class, 'edit'])->name('admin.sport-types.edit');
+    Route::put('/sport-types/{id}', [\App\Http\Controllers\Admin\SportTypeController::class, 'update'])->name('admin.sport-types.update');
+
+    // Developer Only: Sport Types Switch & Lifecycle Management
     Route::middleware('developer')->group(function () {
         Route::get('/sport-types', [\App\Http\Controllers\Admin\SportTypeController::class, 'index'])->name('admin.sport-types.index');
         Route::get('/sport-types/create', [\App\Http\Controllers\Admin\SportTypeController::class, 'create'])->name('admin.sport-types.create');
         Route::post('/sport-types', [\App\Http\Controllers\Admin\SportTypeController::class, 'store'])->name('admin.sport-types.store');
-        Route::get('/sport-types/{id}/edit', [\App\Http\Controllers\Admin\SportTypeController::class, 'edit'])->name('admin.sport-types.edit');
-        Route::put('/sport-types/{id}', [\App\Http\Controllers\Admin\SportTypeController::class, 'update'])->name('admin.sport-types.update');
         Route::post('/sport-types/{id}/activate', [\App\Http\Controllers\Admin\SportTypeController::class, 'activate'])->name('admin.sport-types.activate');
         Route::delete('/sport-types/{id}', [\App\Http\Controllers\Admin\SportTypeController::class, 'destroy'])->name('admin.sport-types.destroy');
     });
