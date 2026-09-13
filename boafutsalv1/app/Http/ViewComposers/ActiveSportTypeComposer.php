@@ -11,7 +11,7 @@ class ActiveSportTypeComposer
     public function compose(View $view): void
     {
         $activeSportType = Cache::rememberForever('active_sport_type', function () {
-            return SportType::with(['galleries', 'fields.prices'])
+            return SportType::with(['galleries', 'fields.prices', 'pageSections'])
                 ->where('is_active', true)
                 ->first();
         });
