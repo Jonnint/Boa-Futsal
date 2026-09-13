@@ -92,14 +92,16 @@
         <div class="container mx-auto px-6 z-10 relative text-center">
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-full mb-6 relative overflow-hidden badge-shine">
                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span class="text-green-400 text-sm font-bold uppercase tracking-widest">Panduan Lengkap</span>
+                <span class="text-green-400 text-sm font-bold uppercase tracking-widest">
+                    {{ $activeSportType ? $activeSportType->getSectionValue('cara_booking', 'hero_badge', 'Panduan Lengkap') : 'Panduan Lengkap' }}
+                </span>
             </div>
 
             <h1 class="text-5xl md:text-7xl font-extrabold leading-[1.1] tracking-tight mb-6">
-                Tata Cara <span class="gradient-text">Booking</span>
+                {!! $activeSportType ? $activeSportType->getSectionValue('cara_booking', 'hero_title', 'Tata Cara <span class="gradient-text">Booking</span>') : 'Tata Cara <span class="gradient-text">Booking</span>' !!}
             </h1>
             <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
-                Pesan lapangan futsal BOA dalam hitungan menit. Tersedia dua pilihan — langsung booking tanpa akun, atau daftar member untuk nikmati keuntungan eksklusif.
+                {{ $activeSportType ? $activeSportType->getSectionValue('cara_booking', 'hero_subtitle', 'Pesan lapangan ' . ($activeSportType->name ?? 'futsal') . ' BOA dalam hitungan menit. Tersedia dua pilihan — langsung booking tanpa akun, atau daftar member untuk nikmati keuntungan eksklusif.') : 'Pesan lapangan futsal BOA dalam hitungan menit. Tersedia dua pilihan — langsung booking tanpa akun, atau daftar member untuk nikmati keuntungan eksklusif.' }}
             </p>
 
             <div class="flex flex-wrap justify-center gap-3 mt-10">
@@ -145,6 +147,37 @@
             </div>
 
             <!-- Steps -->
+            @php
+                $guestSteps = $activeSportType?->getSectionValue('cara_booking', 'guest_steps');
+            @endphp
+            @if(is_array($guestSteps) && count($guestSteps) > 0)
+                <div class="space-y-6">
+                    @foreach($guestSteps as $idx => $step)
+                        @php $isLast = $loop->last; @endphp
+                        <div class="relative {{ $isLast ? '' : 'step-line' }}">
+                            <div class="flex gap-5">
+                                <div class="w-12 h-12 step-num rounded-xl flex items-center justify-center text-black font-extrabold text-lg flex-shrink-0 shadow-[0_0_20px_rgba(74,222,128,0.3)]">
+                                    {{ $step['step'] ?? ($idx + 1) }}
+                                </div>
+                                <div class="flex-1 {{ $isLast ? '' : 'pb-8' }}">
+                                    <div class="{{ $isLast ? 'bg-gradient-to-br from-green-500/10 to-green-900/10 border border-green-500/30' : 'bg-white/[0.03] border border-white/10 hover:border-green-500/30' }} rounded-2xl p-6 transition-all duration-300">
+                                        <h3 class="text-xl font-extrabold mb-2 text-white">{{ $step['title'] ?? '' }}</h3>
+                                        <p class="text-gray-400 text-sm leading-relaxed">{{ $step['desc'] ?? '' }}</p>
+                                        @if($isLast)
+                                            <div class="mt-4 flex items-center gap-2 text-green-400 text-sm font-bold">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                Konfirmasi dikirim via WhatsApp
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
             <div class="space-y-6">
 
                 <!-- Step 1 -->
@@ -319,6 +352,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="mt-12 text-center">
                 <a href="{{ url('/') }}#fields" class="inline-flex items-center gap-3 px-8 py-4 bg-green-500 text-black font-bold text-sm tracking-widest uppercase transition-all hover:bg-green-400 hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] rounded-full">
@@ -354,39 +388,52 @@
             </div>
 
             <!-- Member Benefits -->
+            @php
+                $memberBenefits = $activeSportType?->getSectionValue('cara_booking', 'member_benefits');
+            @endphp
             <div class="mb-12">
                 <h3 class="text-xl font-extrabold mb-6 text-white">Kenapa Harus Jadi Member? 🏆</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
-                        <div class="text-3xl mb-3">💰</div>
-                        <h4 class="font-extrabold text-white text-sm mb-2">Harga Member Spesial</h4>
-                        <p class="text-gray-500 text-xs leading-relaxed">Dapatkan tarif khusus yang lebih hemat untuk semua sesi booking</p>
-                    </div>
-                    <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
-                        <div class="text-3xl mb-3">🎟️</div>
-                        <h4 class="font-extrabold text-white text-sm mb-2">Akses Voucher Eksklusif</h4>
-                        <p class="text-gray-500 text-xs leading-relaxed">Nikmati voucher diskon yang hanya tersedia untuk member BOA Futsal</p>
-                    </div>
-                    <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
-                        <div class="text-3xl mb-3">📊</div>
-                        <h4 class="font-extrabold text-white text-sm mb-2">Riwayat Booking</h4>
-                        <p class="text-gray-500 text-xs leading-relaxed">Pantau semua histori pemesanan lapangan kamu dari dashboard personal</p>
-                    </div>
-                    <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
-                        <div class="text-3xl mb-3">🔔</div>
-                        <h4 class="font-extrabold text-white text-sm mb-2">Notifikasi Prioritas</h4>
-                        <p class="text-gray-500 text-xs leading-relaxed">Terima notifikasi promo, jadwal, dan info terbaru lebih awal</p>
-                    </div>
-                    <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
-                        <div class="text-3xl mb-3">⚡</div>
-                        <h4 class="font-extrabold text-white text-sm mb-2">Proses Booking Lebih Cepat</h4>
-                        <p class="text-gray-500 text-xs leading-relaxed">Data tersimpan, booking berikutnya makin praktis tanpa isi ulang</p>
-                    </div>
-                    <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
-                        <div class="text-3xl mb-3">🏅</div>
-                        <h4 class="font-extrabold text-white text-sm mb-2">Status Member Eksklusif</h4>
-                        <p class="text-gray-500 text-xs leading-relaxed">Badge member di profil dan akses fitur spesial yang terus berkembang</p>
-                    </div>
+                    @if(is_array($memberBenefits) && count($memberBenefits) > 0)
+                        @foreach($memberBenefits as $b)
+                            <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                                <div class="text-3xl mb-3">{{ $b['icon'] ?? '⭐' }}</div>
+                                <h4 class="font-extrabold text-white text-sm mb-2">{{ $b['title'] ?? '' }}</h4>
+                                <p class="text-gray-500 text-xs leading-relaxed">{{ $b['desc'] ?? '' }}</p>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                            <div class="text-3xl mb-3">💰</div>
+                            <h4 class="font-extrabold text-white text-sm mb-2">Harga Member Spesial</h4>
+                            <p class="text-gray-500 text-xs leading-relaxed">Dapatkan tarif khusus yang lebih hemat untuk semua sesi booking</p>
+                        </div>
+                        <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                            <div class="text-3xl mb-3">🎟️</div>
+                            <h4 class="font-extrabold text-white text-sm mb-2">Akses Voucher Eksklusif</h4>
+                            <p class="text-gray-500 text-xs leading-relaxed">Nikmati voucher diskon yang hanya tersedia untuk member BOA Futsal</p>
+                        </div>
+                        <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                            <div class="text-3xl mb-3">📊</div>
+                            <h4 class="font-extrabold text-white text-sm mb-2">Riwayat Booking</h4>
+                            <p class="text-gray-500 text-xs leading-relaxed">Pantau semua histori pemesanan lapangan kamu dari dashboard personal</p>
+                        </div>
+                        <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                            <div class="text-3xl mb-3">🔔</div>
+                            <h4 class="font-extrabold text-white text-sm mb-2">Notifikasi Prioritas</h4>
+                            <p class="text-gray-500 text-xs leading-relaxed">Terima notifikasi promo, jadwal, dan info terbaru lebih awal</p>
+                        </div>
+                        <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                            <div class="text-3xl mb-3">⚡</div>
+                            <h4 class="font-extrabold text-white text-sm mb-2">Proses Booking Lebih Cepat</h4>
+                            <p class="text-gray-500 text-xs leading-relaxed">Data tersimpan, booking berikutnya makin praktis tanpa isi ulang</p>
+                        </div>
+                        <div class="benefit-card bg-white/[0.03] border border-white/10 rounded-2xl p-5 cursor-default">
+                            <div class="text-3xl mb-3">🏅</div>
+                            <h4 class="font-extrabold text-white text-sm mb-2">Status Member Eksklusif</h4>
+                            <p class="text-gray-500 text-xs leading-relaxed">Badge member di profil dan akses fitur spesial yang terus berkembang</p>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -531,66 +578,83 @@
                 <div class="w-16 h-1 bg-green-500 mx-auto rounded-full"></div>
             </div>
 
+            @php
+                $faqs = $activeSportType?->getSectionValue('cara_booking', 'faq_items');
+            @endphp
             <div class="space-y-3" id="faq-container">
-                <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
-                    <button onclick="toggleFaq(0)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
-                        <span class="font-bold text-white text-sm md:text-base">Apakah saya harus login untuk booking?</span>
-                        <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-0">
-                        Tidak! Kamu bisa booking lapangan tanpa harus login atau membuat akun. Cukup isi data nama dan nomor WhatsApp saat proses pemesanan.
+                @if(is_array($faqs) && count($faqs) > 0)
+                    @foreach($faqs as $idx => $faq)
+                        <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                            <button onclick="toggleFaq({{ $idx }})" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                                <span class="font-bold text-white text-sm md:text-base">{{ $faq['q'] ?? '' }}</span>
+                                <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-{{ $idx }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-{{ $idx }}">
+                                {{ $faq['a'] ?? '' }}
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                        <button onclick="toggleFaq(0)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                            <span class="font-bold text-white text-sm md:text-base">Apakah saya harus login untuk booking?</span>
+                            <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-0">
+                            Tidak! Kamu bisa booking lapangan tanpa harus login atau membuat akun. Cukup isi data nama dan nomor WhatsApp saat proses pemesanan.
+                        </div>
                     </div>
-                </div>
 
-                <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
-                    <button onclick="toggleFaq(1)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
-                        <span class="font-bold text-white text-sm md:text-base">Apa perbedaan booking biasa dan booking sebagai member?</span>
-                        <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-1">
-                        Booking biasa (tanpa login) menggunakan harga regular. Sebagai member, kamu mendapatkan harga spesial yang lebih hemat, akses voucher eksklusif, riwayat booking di dashboard, dan notifikasi prioritas.
+                    <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                        <button onclick="toggleFaq(1)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                            <span class="font-bold text-white text-sm md:text-base">Apa perbedaan booking biasa dan booking sebagai member?</span>
+                            <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-1">
+                            Booking biasa (tanpa login) menggunakan harga regular. Sebagai member, kamu mendapatkan harga spesial yang lebih hemat, akses voucher eksklusif, riwayat booking di dashboard, dan notifikasi prioritas.
+                        </div>
                     </div>
-                </div>
 
-                <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
-                    <button onclick="toggleFaq(2)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
-                        <span class="font-bold text-white text-sm md:text-base">Berapa lama proses konfirmasi booking?</span>
-                        <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-2">
-                        Admin akan mengonfirmasi booking kamu melalui WhatsApp dalam waktu 1–2 jam. Untuk jam malam dan hari libur, konfirmasi bisa membutuhkan waktu lebih lama.
+                    <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                        <button onclick="toggleFaq(2)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                            <span class="font-bold text-white text-sm md:text-base">Berapa lama proses konfirmasi booking?</span>
+                            <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-2">
+                            Admin akan mengonfirmasi booking kamu melalui WhatsApp dalam waktu 1–2 jam. Untuk jam malam dan hari libur, konfirmasi bisa membutuhkan waktu lebih lama.
+                        </div>
                     </div>
-                </div>
 
-                <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
-                    <button onclick="toggleFaq(3)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
-                        <span class="font-bold text-white text-sm md:text-base">Bagaimana cara membatalkan booking?</span>
-                        <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-3">
-                        Silakan hubungi admin via WhatsApp atau telepon secepatnya. Kebijakan pembatalan berlaku sesuai ketentuan yang berlaku di BOA Futsal.
+                    <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                        <button onclick="toggleFaq(3)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                            <span class="font-bold text-white text-sm md:text-base">Bagaimana cara membatalkan booking?</span>
+                            <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-3">
+                            Silakan hubungi admin via WhatsApp atau telepon secepatnya. Kebijakan pembatalan berlaku sesuai ketentuan yang berlaku di BOA Futsal.
+                        </div>
                     </div>
-                </div>
 
-                <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
-                    <button onclick="toggleFaq(4)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
-                        <span class="font-bold text-white text-sm md:text-base">Apakah biaya membership bisa dikembalikan?</span>
-                        <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-4">
-                        Biaya membership bersifat non-refundable. Namun kamu bisa menikmati semua manfaat membership selama masa berlaku aktif.
+                    <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                        <button onclick="toggleFaq(4)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                            <span class="font-bold text-white text-sm md:text-base">Apakah biaya membership bisa dikembalikan?</span>
+                            <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-4">
+                            Biaya membership bersifat non-refundable. Namun kamu bisa menikmati semua manfaat membership selama masa berlaku aktif.
+                        </div>
                     </div>
-                </div>
 
-                <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
-                    <button onclick="toggleFaq(5)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
-                        <span class="font-bold text-white text-sm md:text-base">Berapa lama masa berlaku membership?</span>
-                        <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-5">
-                        Membership berlaku selama 1 bulan sejak tanggal aktivasi. Kamu bisa memperpanjang kapan saja melalui halaman payment membership di dashboard.
+                    <div class="faq-item bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-green-500/20 transition-all duration-300">
+                        <button onclick="toggleFaq(5)" class="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
+                            <span class="font-bold text-white text-sm md:text-base">Berapa lama masa berlaku membership?</span>
+                            <svg class="w-5 h-5 text-green-400 flex-shrink-0 transition-transform duration-300" id="faq-icon-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="hidden px-6 pb-5 text-gray-400 text-sm leading-relaxed" id="faq-answer-5">
+                            Membership berlaku selama 1 bulan sejak tanggal aktivasi. Kamu bisa memperpanjang kapan saja melalui halaman payment membership di dashboard.
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </section>
 
@@ -599,7 +663,7 @@
             <div class="text-4xl mb-4">💬</div>
             <h3 class="text-2xl font-extrabold mb-3">Masih Ada Pertanyaan?</h3>
             <p class="text-gray-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
-                Tim BOA Futsal siap membantu kamu 7 hari seminggu. Hubungi kami via WhatsApp atau kunjungi halaman kontak.
+                {{ $activeSportType ? $activeSportType->getSectionValue('cara_booking', 'contact_cta_text', 'Tim BOA ' . ($activeSportType->name ?? 'Futsal') . ' siap membantu kamu 7 hari seminggu. Hubungi kami via WhatsApp atau kunjungi halaman kontak.') : 'Tim BOA Futsal siap membantu kamu 7 hari seminggu. Hubungi kami via WhatsApp atau kunjungi halaman kontak.' }}
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="https://wa.me/yournumber" target="_blank"
@@ -619,7 +683,7 @@
 
     <!-- Footer mini -->
     <footer class="border-t border-white/5 py-8 text-center">
-        <p class="text-gray-600 text-sm">&copy; {{ date('Y') }} <span class="text-green-400 font-bold">BOA Futsal</span>. All rights reserved.</p>
+        <p class="text-gray-600 text-sm">&copy; {{ date('Y') }} <span class="text-green-400 font-bold">BOA {{ strtoupper($activeSportType->name ?? 'Futsal') }}</span>. All rights reserved.</p>
     </footer>
 
     <script>
